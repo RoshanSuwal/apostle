@@ -13,7 +13,7 @@ import java.time.Instant;
 @com.ekbana.bigdata.annotation.PostService(value = "metrics service")
 public class MetricService extends PostService {
 
-    private static final Logger log= LoggerFactory.getLogger("metric");
+    private static final Logger log= LoggerFactory.getLogger("metrics");
     public static ObjectMapper objectMapper = new ObjectMapper();
 
     @Override

@@ -76,7 +76,7 @@ public class QuotaPolicy extends Policy {
                                         .to(requestWrapper.getKeyClientApi().getUserEmail())
                                         .subject(c+" grace calls remaining")
                                         .remark("Grace calls alert")
-                                        .type(EmailEntry.KEY_EXPIRED)
+                                        .type(EmailEntry.GRACE_CALLS_LEFT)
                                         .build()));
             }
             quotaService.increaseGraceCallUses(grace);
@@ -90,7 +90,7 @@ public class QuotaPolicy extends Policy {
                                     .to(requestWrapper.getKeyClientApi().getUserEmail())
                                     .subject(c+" paid calls remaining")
                                     .remark("Paid calls alert")
-                                    .type(EmailEntry.KEY_EXPIRED)
+                                    .type(EmailEntry.CALLS_LEFT)
                                     .build()));
             quotaService.increasePaidCallUses(paid);
         }

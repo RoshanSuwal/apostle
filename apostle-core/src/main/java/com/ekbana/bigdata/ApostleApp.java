@@ -4,7 +4,9 @@ import com.ekbana.bigdata.annotation.NotificationFactory;
 import com.ekbana.bigdata.annotation.Plugin;
 import com.ekbana.bigdata.annotation.Policy;
 import com.ekbana.bigdata.annotation.Validator;
+import com.ekbana.bigdata.entity.webhook.ApiWebhook;
 import com.ekbana.bigdata.plugin.CoreValidator;
+import com.ekbana.bigdata.repository.jpa.ApiWebhooksRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +17,9 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
 
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @SpringBootApplication
 public class ApostleApp implements ApplicationRunner {
@@ -27,13 +31,11 @@ public class ApostleApp implements ApplicationRunner {
     @Autowired
     ConfigurableBeanFactory configurableBeanFactory;
 
+    @Autowired
+    ApiWebhooksRepository apiWebhooksRepository;
+
     public static void main(String[] args) {
         SpringApplication.run(ApostleApp.class,args);
-
-//        AntPathMatcher antPathMatcher = new AntPathMatcher();
-//        String pattern = "/hello/{}/{}/{id}";
-//        Map<String, String> stringStringMap = antPathMatcher.extractUriTemplateVariables(pattern.replace("{}","{_pv}"), "/hello/abc/p/123");
-//        System.out.println(stringStringMap);
     }
 
     @Override

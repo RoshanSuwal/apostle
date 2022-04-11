@@ -40,6 +40,8 @@
                     <configuration>
                         <source>${maven.compiler.source}</source>
                         <target>${maven.compiler.target}</target>
+
+<!--                        <outputDirectory>../apostle/lib</outputDirectory>-->
                     </configuration>
                 </plugin>
             </plugins>

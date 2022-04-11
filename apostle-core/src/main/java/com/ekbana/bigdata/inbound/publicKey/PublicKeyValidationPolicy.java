@@ -21,7 +21,8 @@ public class PublicKeyValidationPolicy extends Policy {
 
     @Override
     protected void pre(RequestWrapper requestWrapper) {
-        PublicKeyAlias publicKeyAlias = publicKeyAliasRepository.findByPublicKey(requestWrapper.getUrlComponents().getHeaderKey("Api-Key"));
+        String publicKey = requestWrapper.getUrlComponents().getHeaderKey("Api-Key");
+        PublicKeyAlias publicKeyAlias = publicKeyAliasRepository.findByPublicKey(publicKey);
         if (publicKeyAlias!=null){
             if (publicKeyAlias.getPublicKey().isActive()) requestWrapper.setPublicKeyAlias(publicKeyAlias);
             else throw new PublicKeyException(applicationConfiguration.getINVALID_KEY_MSG(),requestWrapper);

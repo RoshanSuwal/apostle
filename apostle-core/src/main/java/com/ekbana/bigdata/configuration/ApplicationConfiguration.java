@@ -2,15 +2,17 @@ package com.ekbana.bigdata.configuration;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 
 import java.util.Arrays;
 
 @PropertySource("file:///etc/ekmiddleware/properties/env_var.properties")
+@Configuration
 @Getter
 @Setter
-@Configuration
+@ConfigurationProperties
 public class ApplicationConfiguration {
 
     private String KEY_EXPIRATION_LOWER_WATERMARK_DAYS = "1";
@@ -21,6 +23,7 @@ public class ApplicationConfiguration {
         return Arrays.stream(KEY_EXPIRATION_LOWER_WATERMARK_DAYS
                         .split(","))
                 .mapToInt(s -> Integer.parseInt(s))
+                .sorted()
                 .toArray();
     }
 

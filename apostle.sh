@@ -1,92 +1,64 @@
-/home/roshan/.jdks/openjdk-17.0.1/bin/java -Dspring.output.ansi.enabled=always \
--Dcom.sun.management.jmxremote -Dspring.jmx.enabled=true \
--Dspring.liveBeansView.mbeanDomain \
--Dspring.application.admin.enabled=true \
--javaagent:/snap/intellij-idea-ultimate/348/lib/idea_rt.jar=35527:/snap/intellij-idea-ultimate/348/bin \
--Dfile.encoding=UTF-8 \
--classpath /home/roshan/workspace/ekbana/bigdata/apostle/apostle-core/target/classes\
-:/home/roshan/.m2/repository/org/springframework/spring-webflux/5.3.17/spring-webflux-5.3.17.jar\
-:/home/roshan/.m2/repository/org/springframework/spring-beans/5.3.17/spring-beans-5.3.17.jar\
-:/home/roshan/.m2/repository/org/springframework/spring-core/5.3.17/spring-core-5.3.17.jar\
-:/home/roshan/.m2/repository/org/springframework/spring-jcl/5.3.17/spring-jcl-5.3.17.jar\
-:/home/roshan/.m2/repository/org/springframework/spring-web/5.3.17/spring-web-5.3.17.jar\
-:/home/roshan/.m2/repository/io/projectreactor/reactor-core/3.4.16/reactor-core-3.4.16.jar\
-:/home/roshan/.m2/repository/org/reactivestreams/reactive-streams/1.0.3/reactive-streams-1.0.3.jar\
-:/home/roshan/.m2/repository/org/springframework/boot/spring-boot-starter-web/2.6.5/spring-boot-starter-web-2.6.5.jar\
-:/home/roshan/.m2/repository/org/springframework/boot/spring-boot-starter/2.6.5/spring-boot-starter-2.6.5.jar\
-:/home/roshan/.m2/repository/org/springframework/boot/spring-boot/2.6.5/spring-boot-2.6.5.jar\
-:/home/roshan/.m2/repository/org/springframework/boot/spring-boot-autoconfigure/2.6.5/spring-boot-autoconfigure-2.6.5.jar\
-:/home/roshan/.m2/repository/org/springframework/boot/spring-boot-starter-logging/2.6.5/spring-boot-starter-logging-2.6.5.jar\
-:/home/roshan/.m2/repository/ch/qos/logback/logback-classic/1.2.11/logback-classic-1.2.11.jar\
-:/home/roshan/.m2/repository/ch/qos/logback/logback-core/1.2.11/logback-core-1.2.11.jar\
-:/home/roshan/.m2/repository/org/apache/logging/log4j/log4j-to-slf4j/2.17.2/log4j-to-slf4j-2.17.2.jar\
-:/home/roshan/.m2/repository/org/apache/logging/log4j/log4j-api/2.17.2/log4j-api-2.17.2.jar\
-:/home/roshan/.m2/repository/org/slf4j/jul-to-slf4j/1.7.36/jul-to-slf4j-1.7.36.jar\
-:/home/roshan/.m2/repository/jakarta/annotation/jakarta.annotation-api/1.3.5/jakarta.annotation-api-1.3.5.jar\
-:/home/roshan/.m2/repository/org/yaml/snakeyaml/1.29/snakeyaml-1.29.jar\
-:/home/roshan/.m2/repository/org/springframework/boot/spring-boot-starter-json/2.6.5/spring-boot-starter-json-2.6.5.jar\
-:/home/roshan/.m2/repository/com/fasterxml/jackson/core/jackson-databind/2.13.2/jackson-databind-2.13.2.jar\
-:/home/roshan/.m2/repository/com/fasterxml/jackson/core/jackson-annotations/2.13.2/jackson-annotations-2.13.2.jar\
-:/home/roshan/.m2/repository/com/fasterxml/jackson/core/jackson-core/2.13.2/jackson-core-2.13.2.jar\
-:/home/roshan/.m2/repository/com/fasterxml/jackson/datatype/jackson-datatype-jdk8/2.13.2/jackson-datatype-jdk8-2.13.2.jar\
-:/home/roshan/.m2/repository/com/fasterxml/jackson/datatype/jackson-datatype-jsr310/2.13.2/jackson-datatype-jsr310-2.13.2.jar\
-:/home/roshan/.m2/repository/com/fasterxml/jackson/module/jackson-module-parameter-names/2.13.2/jackson-module-parameter-names-2.13.2.jar\
-:/home/roshan/.m2/repository/org/springframework/boot/spring-boot-starter-tomcat/2.6.5/spring-boot-starter-tomcat-2.6.5.jar\
-:/home/roshan/.m2/repository/org/apache/tomcat/embed/tomcat-embed-core/9.0.60/tomcat-embed-core-9.0.60.jar\
-:/home/roshan/.m2/repository/org/apache/tomcat/embed/tomcat-embed-el/9.0.60/tomcat-embed-el-9.0.60.jar\
-:/home/roshan/.m2/repository/org/apache/tomcat/embed/tomcat-embed-websocket/9.0.60/tomcat-embed-websocket-9.0.60.jar\
-:/home/roshan/.m2/repository/org/springframework/spring-webmvc/5.3.17/spring-webmvc-5.3.17.jar\
-:/home/roshan/.m2/repository/org/springframework/spring-aop/5.3.17/spring-aop-5.3.17.jar\
-:/home/roshan/.m2/repository/org/springframework/spring-context/5.3.17/spring-context-5.3.17.jar\
-:/home/roshan/.m2/repository/org/springframework/spring-expression/5.3.17/spring-expression-5.3.17.jar\
-:/home/roshan/.m2/repository/org/springframework/boot/spring-boot-starter-data-jpa/2.6.5/spring-boot-starter-data-jpa-2.6.5.jar\
-:/home/roshan/.m2/repository/org/springframework/boot/spring-boot-starter-aop/2.6.5/spring-boot-starter-aop-2.6.5.jar\
-:/home/roshan/.m2/repository/org/aspectj/aspectjweaver/1.9.7/aspectjweaver-1.9.7.jar\
-:/home/roshan/.m2/repository/org/springframework/boot/spring-boot-starter-jdbc/2.6.5/spring-boot-starter-jdbc-2.6.5.jar\
-:/home/roshan/.m2/repository/com/zaxxer/HikariCP/4.0.3/HikariCP-4.0.3.jar\
-:/home/roshan/.m2/repository/org/springframework/spring-jdbc/5.3.17/spring-jdbc-5.3.17.jar\
-:/home/roshan/.m2/repository/jakarta/transaction/jakarta.transaction-api/1.3.3/jakarta.transaction-api-1.3.3.jar\
-:/home/roshan/.m2/repository/jakarta/persistence/jakarta.persistence-api/2.2.3/jakarta.persistence-api-2.2.3.jar\
-:/home/roshan/.m2/repository/org/hibernate/hibernate-core/5.6.7.Final/hibernate-core-5.6.7.Final.jar\
-:/home/roshan/.m2/repository/net/bytebuddy/byte-buddy/1.12.8/byte-buddy-1.12.8.jar\
-:/home/roshan/.m2/repository/antlr/antlr/2.7.7/antlr-2.7.7.jar\
-:/home/roshan/.m2/repository/org/jboss/jandex/2.4.2.Final/jandex-2.4.2.Final.jar\
-:/home/roshan/.m2/repository/org/hibernate/common/hibernate-commons-annotations/5.1.2.Final/hibernate-commons-annotations-5.1.2.Final.jar\
-:/home/roshan/.m2/repository/org/springframework/data/spring-data-jpa/2.6.3/spring-data-jpa-2.6.3.jar\
-:/home/roshan/.m2/repository/org/springframework/data/spring-data-commons/2.6.3/spring-data-commons-2.6.3.jar\
-:/home/roshan/.m2/repository/org/springframework/spring-orm/5.3.17/spring-orm-5.3.17.jar\
-:/home/roshan/.m2/repository/org/springframework/spring-tx/5.3.17/spring-tx-5.3.17.jar\
-:/home/roshan/.m2/repository/org/slf4j/slf4j-api/1.7.32/slf4j-api-1.7.32.jar\
-:/home/roshan/.m2/repository/org/springframework/spring-aspects/5.3.17/spring-aspects-5.3.17.jar\
-:/home/roshan/.m2/repository/org/springframework/boot/spring-boot-starter-data-redis/2.6.6/spring-boot-starter-data-redis-2.6.6.jar\
-:/home/roshan/.m2/repository/org/springframework/data/spring-data-redis/2.6.3/spring-data-redis-2.6.3.jar\
-:/home/roshan/.m2/repository/org/springframework/data/spring-data-keyvalue/2.6.3/spring-data-keyvalue-2.6.3.jar\
-:/home/roshan/.m2/repository/org/springframework/spring-oxm/5.3.17/spring-oxm-5.3.17.jar\
-:/home/roshan/.m2/repository/org/springframework/spring-context-support/5.3.17/spring-context-support-5.3.17.jar\
-:/home/roshan/.m2/repository/io/lettuce/lettuce-core/6.1.8.RELEASE/lettuce-core-6.1.8.RELEASE.jar\
-:/home/roshan/.m2/repository/io/netty/netty-common/4.1.75.Final/netty-common-4.1.75.Final.jar\
-:/home/roshan/.m2/repository/io/netty/netty-handler/4.1.75.Final/netty-handler-4.1.75.Final.jar\
-:/home/roshan/.m2/repository/io/netty/netty-resolver/4.1.75.Final/netty-resolver-4.1.75.Final.jar\
-:/home/roshan/.m2/repository/io/netty/netty-buffer/4.1.75.Final/netty-buffer-4.1.75.Final.jar\
-:/home/roshan/.m2/repository/io/netty/netty-codec/4.1.75.Final/netty-codec-4.1.75.Final.jar\
-:/home/roshan/.m2/repository/io/netty/netty-transport/4.1.75.Final/netty-transport-4.1.75.Final.jar\
-:/home/roshan/.m2/repository/org/hibernate/validator/hibernate-validator/6.0.16.Final/hibernate-validator-6.0.16.Final.jar\
-:/home/roshan/.m2/repository/javax/validation/validation-api/2.0.1.Final/validation-api-2.0.1.Final.jar\
-:/home/roshan/.m2/repository/org/jboss/logging/jboss-logging/3.3.2.Final/jboss-logging-3.3.2.Final.jar\
-:/home/roshan/.m2/repository/com/fasterxml/classmate/1.3.4/classmate-1.3.4.jar\
-:/home/roshan/.m2/repository/org/postgresql/postgresql/42.3.3/postgresql-42.3.3.jar\
-:/home/roshan/.m2/repository/org/checkerframework/checker-qual/3.5.0/checker-qual-3.5.0.jar\
-:/home/roshan/.m2/repository/org/projectlombok/lombok/1.18.22/lombok-1.18.22.jar\
-:/home/roshan/.m2/repository/com/squareup/okhttp3/okhttp/4.9.3/okhttp-4.9.3.jar\
-:/home/roshan/.m2/repository/com/squareup/okio/okio/2.8.0/okio-2.8.0.jar\
-:/home/roshan/.m2/repository/org/jetbrains/kotlin/kotlin-stdlib-common/1.4.0/kotlin-stdlib-common-1.4.0.jar\
-:/home/roshan/.m2/repository/org/jetbrains/kotlin/kotlin-stdlib/1.4.10/kotlin-stdlib-1.4.10.jar\
-:/home/roshan/.m2/repository/org/jetbrains/annotations/13.0/annotations-13.0.jar\
-:/home/roshan/.m2/repository/org/json/json/20220320/json-20220320.jar\
-:/home/roshan/.m2/repository/jakarta/xml/bind/jakarta.xml.bind-api/2.3.2/jakarta.xml.bind-api-2.3.2.jar\
-:/home/roshan/.m2/repository/jakarta/activation/jakarta.activation-api/1.2.1/jakarta.activation-api-1.2.1.jar\
-:/home/roshan/.m2/repository/org/glassfish/jaxb/jaxb-runtime/2.3.2/jaxb-runtime-2.3.2.jar\
-:/home/roshan/.m2/repository/org/glassfish/jaxb/txw2/2.3.2/txw2-2.3.2.jar\
-:/home/roshan/.m2/repository/com/sun/istack/istack-commons-runtime/3.0.8/istack-commons-runtime-3.0.8.jar\
-:/home/roshan/.m2/repository/org/jvnet/staxex/stax-ex/1.8.1/stax-ex-1.8.1.jar\
-:/home/roshan/.m2/repository/com/sun/xml/fastinfoset/FastInfoset/1.2.16/FastInfoset-1.2.16.jar com.ekbana.bigdata.ApostleApp
+##!/bin/bash
+#
+#SCRIPTPATH="$( cd -- "$(dirname "$0")" >/dev/null 2>&1 ; pwd -P )"
+#
+#echo ${SCRIPTPATH}
+#cd ${SCRIPTPATH}
+#
+##dir=/home/roshan/workspace/ekbana/bigdata/apostle/libs/
+##plugin_dir=/home/roshan/workspace/ekbana/bigdata/apostle/plugins/
+#
+#dir=/libs/
+#plugin_dir=/plugins/
+#
+#JAVA=/home/roshan/.jdks/openjdk-17.0.1/bin/java
+#
+##classpath_jars=/home/roshan/workspace/ekbana/bigdata/apostle/apostle-core/target/classes
+#
+##classpath_jars=/home/roshan/workspace/ekbana/bigdata/apostle/apostle-core/target/apostle-core-1.0-SNAPSHOT.jar
+#classpath_jars=''
+#plugin_jars=""
+
+#!/bin/bash
+SCRIPTPATH="$( cd -- "$(dirname "$0")" >/dev/null 2>&1 ; pwd -P )"
+
+cd ${SCRIPTPATH}
+cd ..
+PATH="$(pwd)"
+echo "${PATH}"
+cd ${SCRIPTPATH}
+
+dir=${PATH}/libs/
+plugin_dir=${PATH}/plugins/
+
+JAVA=/home/roshan/.jdks/openjdk-17.0.1/bin/java
+
+classpath_jars=''
+plugin_jars=""
+
+for entry in "$dir"*.jar
+do
+  classpath_jars="$classpath_jars:$entry"
+done
+
+for plugin in "$plugin_dir"*.jar
+do
+  plugin_jars="$plugin_jars:$plugin"
+done
+
+echo "$classpath_jars"
+echo "$plugin_jars"
+
+exec \
+  "$JAVA" \
+  -Dspring.output.ansi.enabled=always \
+  -Dcom.sun.management.jmxremote -Dspring.jmx.enabled=true \
+  -Dspring.liveBeansView.mbeanDomain \
+  -Dspring.application.admin.enabled=true \
+  -javaagent:/snap/intellij-idea-ultimate/348/lib/idea_rt.jar=35527:/snap/intellij-idea-ultimate/348/bin \
+  -Dfile.encoding=UTF-8 \
+  -classpath "$classpath_jars$plugin_jars" \
+  com.ekbana.bigdata.ApostleApp \
+  "$@"
+#  --spring.config.location=/home/roshan/workspace/ekbana/bigdata/apostle/application.properties \
+

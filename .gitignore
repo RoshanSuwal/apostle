@@ -1,0 +1,21 @@
+.idea
+
+apostle/
+target/
+libs/
+dependency/
+lib/
+script.sh
+
+### STS ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+
+.vscode/
+*.properties
+

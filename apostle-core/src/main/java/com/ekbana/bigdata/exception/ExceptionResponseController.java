@@ -2,6 +2,8 @@ package com.ekbana.bigdata.exception;
 
 import com.ekbana.bigdata.configuration.ApiHandler;
 import com.ekbana.bigdata.wrapper.ResponseWrapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -15,11 +17,21 @@ import java.time.Instant;
 @RestController
 public class ExceptionResponseController extends ResponseEntityExceptionHandler {
 
+    private static final Logger log= LoggerFactory.getLogger("error-metrics");
+    private final ApiHandler apiHandler;
+
     @Autowired
-    ApiHandler apiHandler;
+    public ExceptionResponseController(ApiHandler apiHandler) {
+        this.apiHandler = apiHandler;
+    }
 
     @ExceptionHandler(BaseException.class)
     public final ResponseEntity<?> handleBaseException(BaseException baseException) {
+        log.error("\n[ API Detail ]\n[ requested ] : {}\n\n[ actual ] : {}",
+                baseException.getRequestWrapper().getApi().toString(),
+                baseException.getRequestWrapper().getKeyClientApi()!=null?baseException.getRequestWrapper().getKeyClientApi().getApi():null,
+                baseException);
+
         ResponseEntity<Object> responseEntity = new ResponseEntity<>(ExceptionResponse.builder()
                 .message(baseException.getMessage())
                 .status_code(baseException.getHttpStatus().value())

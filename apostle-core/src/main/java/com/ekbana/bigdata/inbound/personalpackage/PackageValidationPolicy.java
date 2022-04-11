@@ -10,6 +10,7 @@ import com.ekbana.bigdata.wrapper.RequestWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.time.Instant;
+import java.util.Arrays;
 
 @com.ekbana.bigdata.annotation.Policy(value = "package validation policy")
 public class PackageValidationPolicy extends Policy {
@@ -50,11 +51,19 @@ public class PackageValidationPolicy extends Policy {
                             .type(EmailEntry.KEY_EXPIRED)
                             .build()
             );
-            throw new PublicKeyException("public key has expired",requestWrapper);
-        }else if (timeLeftToExpire < 100){ // remaining days watermark
-            // register email and notification to be sent
-            // check if given email is already sent or not
-            // if not then only then register
+            throw new PublicKeyException(applicationConfiguration.getEXPIRED_PUBLIC_KEY_MSG(),requestWrapper);
+        }else {
+            Arrays.stream(applicationConfiguration.getKEY_EXPIRATION_LOWER_WATERMARK_DAYS())
+                    .filter(c -> timeLeftToExpire<c)
+                    .findFirst()
+                    .ifPresent(c -> requestWrapper.addEmail(
+                            Email.builder()
+                                    .key(requestWrapper.getKeyClientApi().getUniqueId())
+                                    .to(requestWrapper.getKeyClientApi().getUserEmail())
+                                    .subject(c+" days remaining before key expire")
+                                    .remark("Package Expiration Alert")
+                                    .type(EmailEntry.DAYS_LEFT_TO_EXPIRE)
+                                    .build()));
         }
     }
 

@@ -1,5 +1,6 @@
 package com.ekbana.bigdata.response;
 
+import com.ekbana.bigdata.entity.notification.Notification;
 import com.ekbana.bigdata.exception.BaseException;
 import com.ekbana.bigdata.helpers.HTTPRequestDispatcher;
 import com.ekbana.bigdata.wrapper.RequestWrapper;
@@ -46,10 +47,12 @@ public class BackendResponseService extends ResponseService {
                         .sendPostRequest(requestWrapper.getUrlComponents().getRequest());
                 return ResponseEntity.status(response.code()).body(Objects.requireNonNull(response.body()).toString());
             } else {
-                throw new BaseException("service not available", HttpStatus.SERVICE_UNAVAILABLE, requestWrapper);
+                requestWrapper.addNotification(Notification.builder().urgent(true).message(requestWrapper.getUrlComponents().getMethod()+" service not available").build());
+                throw new BaseException(requestWrapper.getUrlComponents().getMethod()+" service not available", HttpStatus.SERVICE_UNAVAILABLE, requestWrapper);
             }
         } catch (IOException e) {
-            throw new BaseException("page not found", HttpStatus.SERVICE_UNAVAILABLE, requestWrapper);
+            requestWrapper.addNotification(Notification.builder().urgent(true).message(e.getMessage()).build());
+            throw new BaseException("Page Not Found", HttpStatus.SERVICE_UNAVAILABLE, requestWrapper);
         }
     }
 }

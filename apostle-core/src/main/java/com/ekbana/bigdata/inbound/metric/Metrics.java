@@ -22,5 +22,4 @@ public class Metrics {
     private int statusCode;
     private long DoBR;
     private String responseType;
-
 }

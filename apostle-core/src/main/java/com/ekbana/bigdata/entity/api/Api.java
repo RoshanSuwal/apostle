@@ -2,6 +2,7 @@ package com.ekbana.bigdata.entity.api;
 
 import com.ekbana.bigdata.entity.response.Mock;
 import lombok.Data;
+import lombok.ToString;
 
 import javax.persistence.*;
 import java.util.regex.Pattern;
@@ -12,6 +13,7 @@ import java.util.regex.Pattern;
 @Entity
 @Table(name = "api")
 @Data
+@ToString
 public class Api {
 
     @Id
