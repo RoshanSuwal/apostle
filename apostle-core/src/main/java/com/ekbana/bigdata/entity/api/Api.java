@@ -60,6 +60,9 @@ public class Api {
     @Column(name = "cache_queries")
     private String queries_params_for_caching;
 
+    @Column(name = "cache_pathvariables")
+    private String path_variables_for_caching;
+
     @Column(name="custom_url")
     private String custom_url;
 
@@ -253,6 +256,14 @@ public class Api {
      */
     public void setQueries_params_for_caching(String queries_params_for_caching) {
         this.queries_params_for_caching = queries_params_for_caching;
+    }
+
+    public String getPath_variables_for_caching() {
+        return path_variables_for_caching;
+    }
+
+    public void setPath_variables_for_caching(String path_variables_for_caching) {
+        this.path_variables_for_caching = path_variables_for_caching;
     }
 
     public RequestAddons getRequestAddons() {

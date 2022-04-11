@@ -1,5 +1,6 @@
 package com.ekbana.bigdata.inbound.personalpackage;
 
+import com.ekbana.bigdata.configuration.ApplicationConfiguration;
 import com.ekbana.bigdata.entity.emails.Email;
 import com.ekbana.bigdata.entity.emails.EmailEntry;
 import com.ekbana.bigdata.entity.publickey.ExpiredPublicKey;
@@ -14,10 +15,12 @@ import java.time.Instant;
 public class PackageValidationPolicy extends Policy {
 
     private final PackageService packageService;
+    private final ApplicationConfiguration applicationConfiguration;
 
     @Autowired
-    public PackageValidationPolicy(PackageService packageService) {
+    public PackageValidationPolicy(PackageService packageService, ApplicationConfiguration applicationConfiguration) {
         this.packageService = packageService;
+        this.applicationConfiguration = applicationConfiguration;
     }
 
     @Override
@@ -26,7 +29,7 @@ public class PackageValidationPolicy extends Policy {
         // time validation of package
 
         if (packageService.isInExpiredKeySpace(requestWrapper.getKeyClientApi().getUniqueId())){// key is in expired key space // will be done in database
-            throw new ExpiredKeyException("public key has expired",requestWrapper);
+            throw new ExpiredKeyException(applicationConfiguration.getEXPIRED_PUBLIC_KEY_MSG(),requestWrapper);
         }
         long timeLeftToExpire = requestWrapper.getPublicKeyAlias().getPublicKey().getExpiresAt() - Instant.now().getEpochSecond() / (24 * 60 * 60);
 

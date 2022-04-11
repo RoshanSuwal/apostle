@@ -1,5 +1,6 @@
 package com.ekbana.bigdata.inbound.ip;
 
+import com.ekbana.bigdata.configuration.ApplicationConfiguration;
 import com.ekbana.bigdata.policy.Policy;
 import com.ekbana.bigdata.wrapper.RequestWrapper;
 import com.ekbana.bigdata.wrapper.ResponseWrapper;
@@ -9,17 +10,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 public class IpValidationPolicy extends Policy {
 
     private final IpService ipService;
+    private final ApplicationConfiguration applicationConfiguration;
 
     @Autowired
-    public IpValidationPolicy(IpService ipService) {
+    public IpValidationPolicy(IpService ipService, ApplicationConfiguration applicationConfiguration) {
         this.ipService = ipService;
+        this.applicationConfiguration = applicationConfiguration;
     }
 
     @Override
     protected void pre(RequestWrapper requestWrapper) {
         // ip blocked
         if (ipService.isBlackListed(requestWrapper.getRemoteIP().getIp_addr()))
-            throw new IpException(" Ip has been blocked",requestWrapper);
+            throw new IpException(applicationConfiguration.getIP_BLOCKED_MSG(),requestWrapper);
     }
 
     @Override

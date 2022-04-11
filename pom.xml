@@ -13,6 +13,7 @@
         <module>plugin-core</module>
         <module>apostle-core</module>
         <module>built-in-plugins</module>
+        <module>mattermost-webhook</module>
     </modules>
 
     <dependencyManagement>

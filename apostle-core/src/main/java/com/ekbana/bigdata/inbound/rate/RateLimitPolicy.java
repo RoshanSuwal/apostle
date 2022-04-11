@@ -10,8 +10,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 public class RateLimitPolicy extends Policy {
 
     // redis funnel dependency
+    private final RateLimitService rateLimitService;
+
     @Autowired
-    private RateLimitService rateLimitService;
+    public RateLimitPolicy(RateLimitService rateLimitService) {
+        this.rateLimitService = rateLimitService;
+    }
 
     @Override
     protected void pre(RequestWrapper requestWrapper) {

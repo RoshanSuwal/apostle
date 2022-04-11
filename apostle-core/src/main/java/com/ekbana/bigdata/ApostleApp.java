@@ -1,5 +1,6 @@
 package com.ekbana.bigdata;
 
+import com.ekbana.bigdata.annotation.NotificationFactory;
 import com.ekbana.bigdata.annotation.Plugin;
 import com.ekbana.bigdata.annotation.Policy;
 import com.ekbana.bigdata.annotation.Validator;
@@ -50,7 +51,8 @@ public class ApostleApp implements ApplicationRunner {
         applicationContext.getBeansWithAnnotation(Validator.class)
                 .forEach((key,value)->logger.info("{} {}",key,value));
 
-        logger.info("{} {}", CoreValidator.class.getSimpleName(),applicationContext.getBean("core validator"));
-        logger.info("{} {}", CoreValidator.class.getSimpleName(),applicationContext.getBean(CoreValidator.class));
+        logger.info("Notification Factories");
+        applicationContext.getBeansWithAnnotation(NotificationFactory.class)
+                .forEach((key,value)->logger.info("{} {}",key,value));
     }
 }

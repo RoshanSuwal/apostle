@@ -62,6 +62,14 @@ public class CacheResponseService extends ResponseService {
             }
         }
 
+        if (api.getPath_variables_for_caching()!=null){
+            for (String str : api.getPath_variables_for_caching().split(",")) {
+                cachingKey.append(str)
+                        .append("=")
+                        .append(urlComponents.getPathVariableByKey(str)).append(",");
+            }
+        }
+
         //TODO : perform some hashing algorithm to cachingKey
         return cachingKey.toString();
     }
