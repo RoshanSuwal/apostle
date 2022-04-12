@@ -28,14 +28,19 @@ public class URLInterceptors {
         if (queryStringFromCMS != null && queryStringFromCMS.length()>0) {
             JsonNode hNode = mapper.readTree(queryStringFromCMS);
             Iterator<Map.Entry<String, JsonNode>> fieldsIterator = hNode.fields();
+            StringBuilder queryStringFromCms= new StringBuilder();
             while (fieldsIterator.hasNext()) {
                 Map.Entry<String, JsonNode> field = fieldsIterator.next();
-                url.addQueryParameter(field.getKey(), field.getValue().asText());
+//                url.addQueryParameter(field.getKey(), field.getValue().asText());
+                queryStringFromCms.append(field.getKey())
+                        .append("=").
+                        append(field.getValue().asText())
+                        .append("&");
             }
             if (queryStringFromRequest != null) {
-                finalUrl = url.build().uri().toString() + "&" + queryStringFromRequest;
+                finalUrl = url.build().uri() + "?" + queryStringFromCms+queryStringFromRequest;
             }else{
-                finalUrl = url.build().uri().toString();
+                finalUrl = url.build().uri()+"?"+queryStringFromCms;
             }
         }else{
             finalUrl = url.build().uri()+"?"+queryStringFromRequest;

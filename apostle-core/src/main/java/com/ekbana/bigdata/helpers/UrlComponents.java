@@ -1,11 +1,15 @@
 package com.ekbana.bigdata.helpers;
 
 import okhttp3.MediaType;
+import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.Part;
 import java.io.IOException;
 import java.nio.CharBuffer;
+import java.util.Collection;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
@@ -17,17 +21,17 @@ public class UrlComponents {
 
     private final HttpServletRequest req;
     private HashMap<String, String> queryMap;
-    private Map<String,String > pathVariableMap;
+    private Map<String, String> pathVariableMap;
 
     public UrlComponents(HttpServletRequest request) {
         this.req = request;
         this.parseQueryParameters();
-        this.pathVariableMap=new HashMap<>();
+        this.pathVariableMap = new HashMap<>();
     }
 
     /**
      * parse Query Parameters
-     *
+     * <p>
      * builds the Hashmap<String,String> of the base_url query params
      */
     private void parseQueryParameters() {
@@ -121,12 +125,37 @@ public class UrlComponents {
      * @return RequestBody  of the request
      * @method getRequest
      */
-    public RequestBody getRequest() throws IOException {
-        CharBuffer buffer = CharBuffer.allocate(req.getContentLength());
-        req.getReader().read(buffer);
-        RequestBody requestBody = RequestBody.create(String.copyValueOf(buffer.array()), MediaType.get(getContentType()));
-        // return RequestBody.create(MediaType.get(getContentType()),getRequestBody());
-        return requestBody;
+    public RequestBody getRequest() throws IOException, ServletException {
+        org.springframework.http.MediaType mediaType = org.springframework.http.MediaType.valueOf(getContentType());
+
+        if (mediaType.getType().toLowerCase().equals("multipart")) {
+            MultipartBody.Builder builder = new MultipartBody.Builder();
+            Collection<Part> parts = req.getParts();
+
+            for (Part part : parts) {
+                try {
+                    String value = new String(req.getPart(part.getName()).getInputStream().readAllBytes());
+                    String name = part.getName();
+                    if (part.getContentType() == null)
+                        builder.addFormDataPart(name, value);
+                    else
+                        builder.addFormDataPart(part.getName(), part.getSubmittedFileName(), RequestBody.create(MediaType.get(part.getContentType()), part.getInputStream().readAllBytes()));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (ServletException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            builder.setType(MediaType.get(getContentType().split(";")[0]));
+            return builder.build();
+        } else {
+            CharBuffer buffer = CharBuffer.allocate(req.getContentLength());
+            req.getReader().read(buffer);
+            String body1 = String.copyValueOf(buffer.array());
+            RequestBody requestBody = RequestBody.create(body1, MediaType.get(getContentType()));
+            return requestBody;
+        }
     }
 
     public String getContentType() {
@@ -144,16 +173,16 @@ public class UrlComponents {
                 replacedHeader.put(key, this.req.getHeader(key));
             }
         }
-        String[] remove=new String[]{"user-agent","accept","postman-token","host","accept-encoding","connection","content-type","content-length"};
+        String[] remove = new String[]{"user-agent", "accept", "postman-token", "host", "accept-encoding", "connection", "content-type", "content-length"};
 
-        for (String r:remove) {
+        for (String r : remove) {
             replacedHeader.remove(r);
         }
         return replacedHeader;
     }
 
-    public void setPathVariableMap(Map<String,String> pathVariableMap){
-        this.pathVariableMap=pathVariableMap;
+    public void setPathVariableMap(Map<String, String> pathVariableMap) {
+        this.pathVariableMap = pathVariableMap;
     }
 
     public String getPathVariableByKey(String str) {

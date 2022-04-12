@@ -9,6 +9,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
+import javax.servlet.ServletException;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Objects;
@@ -46,11 +47,44 @@ public class BackendResponseService extends ResponseService {
                         .setRedirectToUrl(requestWrapper.getKeyClientApi().getApi(), requestWrapper.getHttpServletRequest().getQueryString())
                         .sendPostRequest(requestWrapper.getUrlComponents().getRequest());
                 return ResponseEntity.status(response.code()).body(Objects.requireNonNull(response.body()).toString());
+            }else if (requestWrapper.getUrlComponents().getMethod().equals(HttpMethod.PUT.toString())) {
+                okhttp3.Response response = HTTPRequestDispatcher.builder()
+                        .okHttp(new OkHttpClient())
+                        .headers(requestWrapper.getKeyClientApi().getApi().getRequestAddons() == null ? null : requestWrapper.getKeyClientApi().getApi().getRequestAddons().getRequestHeaders())
+                        .replaceHeader(replaceHeader)
+                        .queryParameters(requestWrapper.getKeyClientApi().getApi().getRequestAddons() == null ? null : requestWrapper.getKeyClientApi().getApi().getRequestAddons().getQueryParam())
+                        .build()
+                        .setRedirectToUrl(requestWrapper.getKeyClientApi().getApi(), requestWrapper.getHttpServletRequest().getQueryString())
+                        .sendPutRequest(requestWrapper.getUrlComponents().getRequest());
+                return ResponseEntity.status(response.code()).body(Objects.requireNonNull(response.body()).toString());
+            }else if (requestWrapper.getUrlComponents().getMethod().equals(HttpMethod.PATCH.toString())) {
+                okhttp3.Response response = HTTPRequestDispatcher.builder()
+                        .okHttp(new OkHttpClient())
+                        .headers(requestWrapper.getKeyClientApi().getApi().getRequestAddons() == null ? null : requestWrapper.getKeyClientApi().getApi().getRequestAddons().getRequestHeaders())
+                        .replaceHeader(replaceHeader)
+                        .queryParameters(requestWrapper.getKeyClientApi().getApi().getRequestAddons() == null ? null : requestWrapper.getKeyClientApi().getApi().getRequestAddons().getQueryParam())
+                        .build()
+                        .setRedirectToUrl(requestWrapper.getKeyClientApi().getApi(), requestWrapper.getHttpServletRequest().getQueryString())
+                        .sendPatchRequest(requestWrapper.getUrlComponents().getRequest());
+                return ResponseEntity.status(response.code()).body(Objects.requireNonNull(response.body()).toString());
+            }else if (requestWrapper.getUrlComponents().getMethod().equals(HttpMethod.DELETE.toString())) {
+                okhttp3.Response response = HTTPRequestDispatcher.builder()
+                        .okHttp(new OkHttpClient())
+                        .headers(requestWrapper.getKeyClientApi().getApi().getRequestAddons() == null ? null : requestWrapper.getKeyClientApi().getApi().getRequestAddons().getRequestHeaders())
+                        .replaceHeader(replaceHeader)
+                        .queryParameters(requestWrapper.getKeyClientApi().getApi().getRequestAddons() == null ? null : requestWrapper.getKeyClientApi().getApi().getRequestAddons().getQueryParam())
+                        .build()
+                        .setRedirectToUrl(requestWrapper.getKeyClientApi().getApi(), requestWrapper.getHttpServletRequest().getQueryString())
+                        .sendDeleteRequest(requestWrapper.getUrlComponents().getRequest());
+                return ResponseEntity.status(response.code()).body(Objects.requireNonNull(response.body()).toString());
             } else {
                 requestWrapper.addNotification(Notification.builder().urgent(true).message(requestWrapper.getUrlComponents().getMethod()+" service not available").build());
                 throw new BaseException(requestWrapper.getUrlComponents().getMethod()+" service not available", HttpStatus.SERVICE_UNAVAILABLE, requestWrapper);
             }
-        } catch (IOException e) {
+        } catch (ServletException servletException){
+            requestWrapper.addNotification(Notification.builder().urgent(true).message(servletException.getMessage()).build());
+            throw new BaseException(servletException.getMessage(), HttpStatus.SERVICE_UNAVAILABLE, requestWrapper);
+        }catch (IOException e) {
             requestWrapper.addNotification(Notification.builder().urgent(true).message(e.getMessage()).build());
             throw new BaseException("Page Not Found", HttpStatus.SERVICE_UNAVAILABLE, requestWrapper);
         }

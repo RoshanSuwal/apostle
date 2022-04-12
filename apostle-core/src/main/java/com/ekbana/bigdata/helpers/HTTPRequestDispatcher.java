@@ -44,8 +44,37 @@ public class HTTPRequestDispatcher {
 
         Request rq = new Request.Builder()
                 .url(this.url)
-                //.post(RequestBody.create(MediaType.parse(request.getContentType()), String.copyValueOf(buffer)))
                 .post(request)
+                .build();
+        return client.newCall(rq).execute();
+    }
+
+    public Response sendPutRequest(RequestBody request) throws IOException {
+        OkHttpClient client = this.getOkHttpClient();
+
+        Request rq = new Request.Builder()
+                .url(this.url)
+                .put(request)
+                .build();
+        return client.newCall(rq).execute();
+    }
+
+    public Response sendPatchRequest(RequestBody request) throws IOException {
+        OkHttpClient client = this.getOkHttpClient();
+
+        Request rq = new Request.Builder()
+                .url(this.url)
+                .patch(request)
+                .build();
+        return client.newCall(rq).execute();
+    }
+
+    public Response sendDeleteRequest(RequestBody request) throws IOException {
+        OkHttpClient client = this.getOkHttpClient();
+
+        Request rq = new Request.Builder()
+                .url(this.url)
+                .delete(request)
                 .build();
         return client.newCall(rq).execute();
     }
