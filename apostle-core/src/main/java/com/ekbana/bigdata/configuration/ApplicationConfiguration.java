@@ -73,25 +73,25 @@ public class ApplicationConfiguration {
 
 
     /**Policies*/
-    private String PRE_POLICIES="ip policy,public key policy, api validation policy, package validation policy, quota policy, rate limit policy";
-    private String POST_POLICIES="quota policy, rate limit policy";
-    private String RESPONSE_ORDER="mock response, cache response, backend response";
-    private String POST_SERVICES="metrics service, email service, notification service";
+    private String PRE_POLICIES="ip policy,public key policy,api validation policy,package validation policy,quota policy,rate limit policy";
+    private String POST_POLICIES="quota policy,rate limit policy";
+    private String RESPONSE_ORDER="mock response,cache response,backend response";
+    private String POST_SERVICES="metrics service,email service, notification service";
 
     public String[] getPRE_POLICIES(){
-        return PRE_POLICIES.split(",");
+        return Arrays.stream(PRE_POLICIES.split(",")).map(s->s.trim()).toArray(String[]::new);
     }
 
     public String[] getPOST_POLICIES(){
-        return POST_POLICIES.split(",");
+        return Arrays.stream(POST_POLICIES.split(",")).map(s->s.trim()).toArray(String[]::new);
     }
 
     public String[] getRESPONSE_ORDER(){
-        return RESPONSE_ORDER.split(",");
+        return Arrays.stream(RESPONSE_ORDER.split(",")).map(s->s.trim()).toArray(String[]::new);
     }
 
     public String[] getPOST_SERVICES(){
-        return POST_SERVICES.split(",");
+        return Arrays.stream(POST_SERVICES.split(",")).map(s->s.trim()).toArray(String[]::new);
     }
 
 }
