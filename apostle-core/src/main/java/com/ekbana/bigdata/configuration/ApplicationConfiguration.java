@@ -8,6 +8,7 @@ import org.springframework.context.annotation.PropertySource;
 
 import java.util.Arrays;
 
+//@PropertySource("file:///home/roshan/workspace/ekbana/bigdata/apostle/env_var.properties")
 @PropertySource("file:///etc/ekmiddleware/properties/env_var.properties")
 @Configuration
 @Getter
@@ -69,4 +70,28 @@ public class ApplicationConfiguration {
 
     private String INACTIVE_KEY_MSG;
     private int INACTIVE_KEY_CODE;
+
+
+    /**Policies*/
+    private String PRE_POLICIES="ip policy,public key policy, api validation policy, package validation policy, quota policy, rate limit policy";
+    private String POST_POLICIES="quota policy, rate limit policy";
+    private String RESPONSE_ORDER="mock response, cache response, backend response";
+    private String POST_SERVICES="metrics service, email service, notification service";
+
+    public String[] getPRE_POLICIES(){
+        return PRE_POLICIES.split(",");
+    }
+
+    public String[] getPOST_POLICIES(){
+        return POST_POLICIES.split(",");
+    }
+
+    public String[] getRESPONSE_ORDER(){
+        return RESPONSE_ORDER.split(",");
+    }
+
+    public String[] getPOST_SERVICES(){
+        return POST_SERVICES.split(",");
+    }
+
 }
