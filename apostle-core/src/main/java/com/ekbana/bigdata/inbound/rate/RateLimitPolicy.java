@@ -51,16 +51,21 @@ public class RateLimitPolicy extends Policy {
         else if (funnel.getYear() > 0 ) {
             // year rule
             rateLimitService.update(uniqueId,RateLimit.Interval.YEAR);
-        }else if (funnel.getMonth() > 0 ) {
+        }
+
+        if (funnel.getMonth() > 0 ) {
             // month rule
             rateLimitService.update(uniqueId,RateLimit.Interval.MONTH);
-        }else if (funnel.getDay() > 0 ) {
+        }
+        if (funnel.getDay() > 0 ) {
             // day rule
             rateLimitService.update(uniqueId,RateLimit.Interval.DAY);
-        }else if (funnel.getHour() > 0 ) {
+        }
+        if (funnel.getHour() > 0 ) {
             // hour rule
             rateLimitService.update(uniqueId,RateLimit.Interval.HOUR);
-        }else if (funnel.getMinute() > 0 ) {
+        }
+        if (funnel.getMinute() > 0 ) {
             // minute rule
             rateLimitService.update(uniqueId,RateLimit.Interval.MINUTE);
         }

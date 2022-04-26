@@ -1,24 +1,28 @@
 package com.ekbana.bigdata.entity.emails;
 
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
 @Table(name = "emails")
-@Data
+@Getter @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class Emails {
+public class Emails implements Serializable {
     @Id @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+//    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "email_seq")
+//    @SequenceGenerator(name = "email_seq",sequenceName = "email_seq")
     private int id;
-    @Column(name = "to")
-    private String to;
     @Column(name = "subject")
     private String subject;
+    @Column(name = "\"to\"")
+    private String to;
     @Column(name = "body")
     private String body;
     @Column(name = "type")

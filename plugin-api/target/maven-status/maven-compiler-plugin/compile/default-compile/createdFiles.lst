@@ -1,7 +1,0 @@
-com/ekbana/bigdata/plugin_api/factory/ValidatorFactory.class
-com/ekbana/bigdata/plugin_api/factory/NotificationFactory.class
-com/ekbana/bigdata/plugin_api/model/Validator.class
-com/ekbana/bigdata/plugin_api/factory/PluginFactory.class
-com/ekbana/bigdata/plugin_api/Plugin.class
-com/ekbana/bigdata/plugin_api/Message.class
-com/ekbana/bigdata/plugin_api/model/Notification.class

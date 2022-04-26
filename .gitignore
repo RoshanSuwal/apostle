@@ -2,6 +2,7 @@
 
 apostle/
 target/
+**/target/
 libs/
 dependency/
 lib/

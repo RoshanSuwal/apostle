@@ -49,7 +49,7 @@ public class EmailService extends com.ekbana.bigdata.post.PostService {
 //        }
 
         if (requestWrapper.getEmails().size()>0){
-            EmailEntry emailEntry = Optional.of(this.emailRedisRepository.getEmail(requestWrapper.getKeyClientApi().getUniqueId()))
+            EmailEntry emailEntry = Optional.ofNullable(this.emailRedisRepository.getEmail(requestWrapper.getKeyClientApi().getUniqueId()))
                     .orElse(new EmailEntry(requestWrapper.getKeyClientApi().getUniqueId(),new ArrayList<>()));
             List<Emails> emails = requestWrapper.getEmails().stream().filter(email -> !emailEntry.getType().contains(email.getType()))
                     .map(email -> {
@@ -58,7 +58,8 @@ public class EmailService extends com.ekbana.bigdata.post.PostService {
                     }).collect(Collectors.toList());
 
             emailRedisRepository.registerEmail(emailEntry);
-            emailRepository.saveAll(emails);
+//            emailRepository.saveAll(emails);
+            emails.forEach(email->emailRepository.save(email));
         }
     }
 }

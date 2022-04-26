@@ -42,7 +42,20 @@ public class QuotaPolicy extends Policy {
             Grace grace = this.quotaService.isInGraceKeySpace(paid.getUuid()) ?
                     this.quotaService.getFromGraceKeySpace(paid.getUuid()) :
                     new Grace(paid.getUuid(), 0L, requestWrapper.getKeyClientApi().getPersonalPackage().getGraceCall());
-            if (grace.getUsed_grace_calls() == 0) {
+
+            if (grace.getAgreed_grace_calls()==0){
+                quotaService.registerInExpireKeySpace(new ExpiredPublicKey(requestWrapper.getKeyClientApi().getUniqueId(),Instant.now().getEpochSecond(),"Paid Calls Quota finished !!1"));
+                requestWrapper.addEmail(
+                        Email.builder()
+                                .key(grace.getUuid())
+                                .to(requestWrapper.getKeyClientApi().getUserEmail())
+                                .subject("key expired. Paid Calls Quota finished")
+                                .remark("This key has expired")
+                                .type(EmailEntry.KEY_EXPIRED)
+                                .build()
+                );
+                return;
+            }else if (grace.getUsed_grace_calls() == 0) {
                 requestWrapper.addEmail(
                         Email.builder()
                                 .key(grace.getUuid())
