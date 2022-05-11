@@ -8,8 +8,8 @@ import org.springframework.context.annotation.PropertySource;
 
 import java.util.Arrays;
 
-//@PropertySource("file:///home/roshan/workspace/ekbana/bigdata/apostle/env_var.properties")
-@PropertySource("file:///etc/ekmiddleware/properties/env_var.properties")
+@PropertySource("file:///home/roshan/workspace/ekbana/bigdata/apostle/env_var.properties")
+//@PropertySource("file:///etc/ekmiddleware/properties/env_var.properties")
 @Configuration
 @Getter
 @Setter
@@ -17,8 +17,8 @@ import java.util.Arrays;
 public class ApplicationConfiguration {
 
     private String KEY_EXPIRATION_LOWER_WATERMARK_DAYS = "1";
-    private String ALLOWED_CALLS_LOWER_WATERMARK = "1";
-    private String GRACE_CALLS_LOWER_WATERMARK="1";
+    private String ALLOWED_CALLS_LOWER_WATERMARKS = "1";
+    private String GRACE_CALLS_LOWER_WATERMARKS="1";
 
     public int[] getKEY_EXPIRATION_LOWER_WATERMARK_DAYS() {
         return Arrays.stream(KEY_EXPIRATION_LOWER_WATERMARK_DAYS
@@ -29,14 +29,14 @@ public class ApplicationConfiguration {
     }
 
     public int[] getALLOWED_CALLS_LOWER_WATERMARKS() {
-        return Arrays.stream(ALLOWED_CALLS_LOWER_WATERMARK
+        return Arrays.stream(ALLOWED_CALLS_LOWER_WATERMARKS
                         .split(","))
                 .mapToInt(s -> Integer.parseInt(s))
                 .toArray();
     }
 
     public int[] getGRACE_CALLS_LOWER_WATERMARKS() {
-        return Arrays.stream(GRACE_CALLS_LOWER_WATERMARK
+        return Arrays.stream(GRACE_CALLS_LOWER_WATERMARKS
                         .split(","))
                 .mapToInt(s -> Integer.parseInt(s))
                 .sorted()
@@ -74,7 +74,7 @@ public class ApplicationConfiguration {
 
     /**Policies*/
     private String PRE_POLICIES="ip policy,public key policy,api validation policy,package validation policy,quota policy,rate limit policy";
-    private String POST_POLICIES="quota policy,rate limit policy";
+    private String POST_POLICIES="cache policy,quota policy,rate limit policy";
     private String RESPONSE_ORDER="mock response,cache response,backend response";
     private String POST_SERVICES="metrics service,email service, notification service";
 

@@ -53,7 +53,7 @@ public class ApostleConfiguration {
             try {
                 policy = policy == null ?
                         applicationContext.getBean(prePolicy, Policy.class) :
-                        policy.nextPolicy(applicationContext.getBean(prePolicy, Policy.class));
+                        policy.nextPrePolicy(applicationContext.getBean(prePolicy, Policy.class));
                 if (startingPolicy == null) startingPolicy = policy;
                 log.info("[{}] {}","pre-policy",prePolicy);
             } catch (BeanNotOfRequiredTypeException exception) {
@@ -83,7 +83,7 @@ public class ApostleConfiguration {
             try {
                 policy = policy == null ?
                         applicationContext.getBean(postPolicy, Policy.class) :
-                        policy.nextPolicy(applicationContext.getBean(postPolicy, Policy.class));
+                        policy.nextPostPolicy(applicationContext.getBean(postPolicy, Policy.class));
                 if (startingPolicy == null) startingPolicy = policy;
                 log.info("[{}] {}","post-policy",postPolicy);
             } catch (BeanNotOfRequiredTypeException exception) {

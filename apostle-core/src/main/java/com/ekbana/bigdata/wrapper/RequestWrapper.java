@@ -8,11 +8,14 @@ import com.ekbana.bigdata.entity.publickey.KeyClientApi;
 import com.ekbana.bigdata.entity.publickey.PublicKeyAlias;
 import com.ekbana.bigdata.helpers.UrlComponents;
 import lombok.*;
+import org.json.JSONObject;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Getter @Setter
 @NoArgsConstructor @AllArgsConstructor
@@ -31,6 +34,11 @@ public class RequestWrapper {
     private Long startTime;
 
     @Builder.Default
+    private Map<String,Object> metricsMapper=new HashMap<>();
+
+    @Builder.Default
+    private JSONObject metrics=new JSONObject();
+    @Builder.Default
     private List<Email> emails=new ArrayList<>();
     @Builder.Default
     private List<Notification> notifications=new ArrayList<>();
@@ -41,6 +49,11 @@ public class RequestWrapper {
 
     public void addNotification(Notification notification){
         notifications.add(notification);
+    }
+
+    public void putInMetrics(String key,Object value){
+        metrics.put(key,value);
+        metricsMapper.put(key,value);
     }
 
 }

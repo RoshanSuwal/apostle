@@ -7,11 +7,17 @@ import org.slf4j.LoggerFactory;
 
 public abstract class Policy {
 
-    private final static Logger log= LoggerFactory.getLogger(Policy.class);
-    protected Policy nextPolicy=null;
+    public final static Logger log= LoggerFactory.getLogger(Policy.class);
+    protected Policy nextPostPolicy=null;
+    protected Policy nextPrePolicy=null;
 
-    public Policy nextPolicy(Policy nextPolicy){
-        this.nextPolicy=nextPolicy;
+    public Policy nextPrePolicy(Policy nextPolicy){
+        this.nextPrePolicy=nextPolicy;
+        return nextPolicy;
+    }
+
+    public Policy nextPostPolicy(Policy nextPolicy){
+        this.nextPostPolicy=nextPolicy;
         return nextPolicy;
     }
     protected void post(RequestWrapper requestWrapper, ResponseWrapper responseWrapper){}
@@ -20,13 +26,13 @@ public abstract class Policy {
     public RequestWrapper preExecute(RequestWrapper requestWrapper){
         log.info("[{}] {}","pre-policy",this.getClass().getSimpleName());
         pre(requestWrapper);
-        return this.nextPolicy==null? requestWrapper:this.nextPolicy.preExecute(requestWrapper);
+        return this.nextPrePolicy==null? requestWrapper:this.nextPrePolicy.preExecute(requestWrapper);
     }
 
     public void postExecute(RequestWrapper requestWrapper,ResponseWrapper responseWrapper){
         log.info("[{}] {}","post-policy",this.getClass().getSimpleName());
         post(requestWrapper,responseWrapper);
-        if (this.nextPolicy!=null) this.nextPolicy.postExecute(requestWrapper,responseWrapper);
+        if (this.nextPostPolicy!=null) this.nextPostPolicy.postExecute(requestWrapper,responseWrapper);
 
     }
 }

@@ -14,5 +14,13 @@
         <module name="built-in-plugins" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="apostle" target="17" />
+      <module name="apostle-core" target="17" />
+      <module name="built-in-plugins" target="16" />
+      <module name="mattermost-webhook" target="17" />
+      <module name="plugin-api" target="16" />
+      <module name="plugin-core" target="16" />
+    </bytecodeTargetLevel>
   </component>
 </project>

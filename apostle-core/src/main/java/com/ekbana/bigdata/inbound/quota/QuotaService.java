@@ -11,6 +11,8 @@ import org.springframework.stereotype.Service;
 @Repository
 public class QuotaService {
     private static final String PAID_KEYSPACE = "paid_calls";
+    private static final String USED_PAID_KEYSPACE="used_paid_calls";
+    private static final String USED_GRACE_KEYSPACE="used_grace_calls";
     private static final String GRACE_KEYSPACE = "grace_calls";
     private static final String EXPIRE_KEY_SPACE = "expire_keys";
 
@@ -30,8 +32,8 @@ public class QuotaService {
         return this.hashOperations.hasKey(GRACE_KEYSPACE,key);
     }
 
-    public void registerInPaidKeySpace(Paid paid){
-        this.hashOperations.put(PAID_KEYSPACE,paid.getUuid(),paid);
+    public void registerInPaidKeySpace(Paid paid) {
+        this.hashOperations.put(PAID_KEYSPACE, paid.getUuid(), paid);
     }
 
     public Paid getFromPaidKeySpace(String key){
@@ -57,5 +59,34 @@ public class QuotaService {
 
     public void registerInExpireKeySpace(ExpiredPublicKey expiredPublicKey){
         this.hashOperations.put(EXPIRE_KEY_SPACE,expiredPublicKey.getPublicKey(),expiredPublicKey);
+    }
+
+    public boolean isInUsedPaidKeySpace(String key){
+        return this.hashOperations.hasKey(USED_PAID_KEYSPACE,key);
+    }
+
+    public Integer getFromUsedPaidKeySpace(String key){
+        return (Integer) this.hashOperations.get(USED_PAID_KEYSPACE,key);
+    }
+    public void registerInUsedPaidKeySpace(String key){
+        this.hashOperations.put(USED_PAID_KEYSPACE,key,0L);
+    }
+
+    public void increaseUsedPaidCallUses(String hashKey){
+        this.hashOperations.increment(USED_PAID_KEYSPACE,hashKey,1);
+    }
+
+    public boolean isInUsedGraceKeySpace(String key){
+        return this.hashOperations.hasKey(USED_GRACE_KEYSPACE,key);
+    }
+    public Integer getFromUsedGraceKeySpace(String key){
+        return (Integer) this.hashOperations.get(USED_PAID_KEYSPACE,key);
+    }
+    public void registerInUsedGraceKeySpace(String key){
+        this.hashOperations.put(USED_PAID_KEYSPACE,key,0L);
+    }
+
+    public void increaseUsedGraceCallUses(String hashKey){
+        this.hashOperations.increment(USED_GRACE_KEYSPACE,hashKey,1);
     }
 }

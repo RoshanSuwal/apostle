@@ -36,7 +36,7 @@ public abstract class ResponseService {
         logger.info("[{}] {}","Response Service", this.getClass().getSimpleName());
         ResponseEntity<?> responseEntity = responseEntity(request);
         if (responseEntity!=null) {
-            log(request);
+//            log(request);
             return ResponseWrapper.builder()
                     .responseType(responseType)
                     .responseEntity(responseEntity)
