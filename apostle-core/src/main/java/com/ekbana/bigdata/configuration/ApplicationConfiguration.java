@@ -2,14 +2,17 @@ package com.ekbana.bigdata.configuration;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 
+import javax.validation.constraints.Null;
 import java.util.Arrays;
+import java.util.Properties;
 
-@PropertySource("file:///home/roshan/workspace/ekbana/bigdata/apostle/env_var.properties")
-//@PropertySource("file:///etc/ekmiddleware/properties/env_var.properties")
+//@PropertySource("file:///home/roshan/workspace/ekbana/bigdata/apostle/env_var.properties")
+@PropertySource("file:///etc/ekmiddleware/properties/env_var.properties")
 @Configuration
 @Getter
 @Setter
@@ -93,5 +96,4 @@ public class ApplicationConfiguration {
     public String[] getPOST_SERVICES(){
         return Arrays.stream(POST_SERVICES.split(",")).map(s->s.trim()).toArray(String[]::new);
     }
-
 }

@@ -1,5 +1,6 @@
 package com.ekbana.bigdata.inbound.cache;
 
+import com.ekbana.bigdata.configuration.ApplicationProperties;
 import com.ekbana.bigdata.entity.cache.CacheResponse;
 import com.ekbana.bigdata.policy.Policy;
 import com.ekbana.bigdata.wrapper.RequestWrapper;
@@ -13,22 +14,27 @@ import java.util.Objects;
 @com.ekbana.bigdata.annotation.Policy(value = "memory-based cache policy")
 public class MemoryBasedCachePolicy extends Policy {
     private final CachingService cachingService;
-    private final Long MAX_MEMORY_SIZE_FOR_KEY = 200L;// 10 bytes by default
+    private final ApplicationProperties properties;
+    private final Long DEFAULT_MAX_CACHE_MEMORY_SIZE_FOR_KEY = 200L;// 10 bytes by default
+    private final Long MAX_CACHE_MEMORY_SIZE_FOR_KEY;
 
     @Autowired
-    public MemoryBasedCachePolicy(CachingService cachingService) {
+    public MemoryBasedCachePolicy(CachingService cachingService, ApplicationProperties properties) {
         this.cachingService = cachingService;
+        this.properties = properties;
+        this.MAX_CACHE_MEMORY_SIZE_FOR_KEY=Long.parseLong(properties.getProperty("MAX_CACHE_MEMORY_SIZE_FOR_KEY",DEFAULT_MAX_CACHE_MEMORY_SIZE_FOR_KEY.toString()));
     }
 
     @Override
     protected void post(RequestWrapper requestWrapper, ResponseWrapper responseWrapper) {
+//        log.info(" Loading using Properties {}",MAX_CACHE_MEMORY_SIZE_FOR_KEY);
         if (requestWrapper.getKeyClientApi().getApi().isCacheable()) {
             if ((responseWrapper.getResponseType().equals("BACKEND")
 //                    || responseWrapper.getResponseType().equals("MOCK")
             ) && responseWrapper.getResponseEntity().getStatusCode() == HttpStatus.OK) {
                 // check the memory limit if exceed clear the key and insert new
                 final long memorySizeUsedByKey = cachingService.getMemorySizeUsedByKey(requestWrapper.getKeyClientApi().getUniqueId());
-                if (memorySizeUsedByKey >= MAX_MEMORY_SIZE_FOR_KEY) {
+                if (memorySizeUsedByKey >= MAX_CACHE_MEMORY_SIZE_FOR_KEY) {
                     log.info("removing cache key : {}", requestWrapper.getKeyClientApi().getUniqueId());
                     cachingService.removeKey(requestWrapper.getKeyClientApi().getUniqueId());
                 }
@@ -41,7 +47,7 @@ public class MemoryBasedCachePolicy extends Policy {
                 log.info("Caching the response");
                 final long memorySizeUsedByKey1 = cachingService.getMemorySizeUsedByKey(requestWrapper.getKeyClientApi().getUniqueId());
                 final long sizeOfCacheKey = cachingService.getSizeOfHashKey(requestWrapper.getKeyClientApi().getUniqueId());
-                log.info("caching key : {} of size : {} with memory used : {}", requestWrapper.getKeyClientApi().getUniqueId(), sizeOfCacheKey,memorySizeUsedByKey1);
+                log.info("caching key : {} with size : {} and memory used : {}", requestWrapper.getKeyClientApi().getUniqueId(), sizeOfCacheKey,memorySizeUsedByKey1);
                 requestWrapper.putInMetrics("memory_used_for_cache", memorySizeUsedByKey1);
                 requestWrapper.putInMetrics("size_of_cache",sizeOfCacheKey);
             }
