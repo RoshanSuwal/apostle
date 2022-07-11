@@ -6,6 +6,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
 import java.time.Duration;
+import java.time.OffsetDateTime;
 
 @Repository
 public class RateLimitService {
@@ -38,14 +39,19 @@ public class RateLimitService {
     }
 
     private Long intervalToTimeStamp(String interval){
+        Long currentEpochSecond = OffsetDateTime.now().toEpochSecond();
         if(interval.equals(RateLimit.Interval.YEAR))
-            return RateLimit.TIME_INTERVAL.YEAR;
+            return OffsetDateTime.now().plusYears(1).withMonth(1).withDayOfMonth(1).withHour(0).withMinute(0).withSecond(0).toEpochSecond()-currentEpochSecond;
+//            return RateLimit.TIME_INTERVAL.YEAR;
         else if (interval.equals(RateLimit.Interval.MONTH))
-            return RateLimit.TIME_INTERVAL.MONTH;
+            return OffsetDateTime.now().plusMonths(1).withDayOfMonth(1).withHour(0).withMinute(0).withSecond(0).toEpochSecond()-currentEpochSecond;
+//        return RateLimit.TIME_INTERVAL.MONTH;
         else if (interval.equals(RateLimit.Interval.DAY))
-            return RateLimit.TIME_INTERVAL.DAY;
+            return OffsetDateTime.now().plusDays(1).withHour(0).withMinute(0).withSecond(0).toEpochSecond()-currentEpochSecond;
+//        return RateLimit.TIME_INTERVAL.DAY;
         else if (interval.equals(RateLimit.Interval.HOUR))
-            return RateLimit.TIME_INTERVAL.HOUR;
+            return OffsetDateTime.now().plusHours(1).withMinute(0).withSecond(0).toEpochSecond()-currentEpochSecond;
+//        return RateLimit.TIME_INTERVAL.HOUR;
         else if (interval.equals(RateLimit.Interval.MINUTE))
             return RateLimit.TIME_INTERVAL.MINUTE;
         else return 0L;

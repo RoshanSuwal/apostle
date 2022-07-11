@@ -29,25 +29,26 @@ public class QuotaPolicy extends Policy {
     @Override
     protected void post(RequestWrapper requestWrapper, ResponseWrapper responseWrapper) {
         Long totalCalls = requestWrapper.getKeyClientApi().getPersonalPackage().getFunnel().getTotalCalls();
+        Long totalGraceCall = requestWrapper.getKeyClientApi().getPersonalPackage().getGraceCall();
 
-        // get used calls from paid key space from redis
-        Paid paid = quotaService.isInPaidKeySpace(requestWrapper.getKeyClientApi().getUniqueId()) ?
-                quotaService.getFromPaidKeySpace(requestWrapper.getKeyClientApi().getUniqueId()) :
-                new Paid(requestWrapper.getKeyClientApi().getUniqueId(), 0L, requestWrapper.getKeyClientApi().getPersonalPackage().getFunnel().getTotalCalls());
+        Long paidCallUses = quotaService.isInPaidKeySpace(requestWrapper.getKeyClientApi().getUniqueId())
+                ? quotaService.getFromPaidKeySpace(requestWrapper.getKeyClientApi().getUniqueId())
+                : 0L;
 
-        if (paid.getAgreed_calls() != totalCalls) paid.setAgreed_calls(totalCalls);
+        if (paidCallUses == 0) {
+            quotaService.registerInPaidKeySpace(requestWrapper.getKeyClientApi().getUniqueId());
+        }
 
-        if (paid.getUsed_calls() >= paid.getAgreed_calls()) {
-            // get used calls from grace call key space
-            Grace grace = this.quotaService.isInGraceKeySpace(paid.getUuid()) ?
-                    this.quotaService.getFromGraceKeySpace(paid.getUuid()) :
-                    new Grace(paid.getUuid(), 0L, requestWrapper.getKeyClientApi().getPersonalPackage().getGraceCall());
+        if (paidCallUses >= totalCalls) {
+            Long graceCallsUses = this.quotaService.isInGraceKeySpace(requestWrapper.getKeyClientApi().getUniqueId())
+                    ? this.quotaService.getFromGraceKeySpace(requestWrapper.getKeyClientApi().getUniqueId())
+                    : 0L;
 
-            if (grace.getAgreed_grace_calls()==0){
-                quotaService.registerInExpireKeySpace(new ExpiredPublicKey(requestWrapper.getKeyClientApi().getUniqueId(),Instant.now().getEpochSecond(),"Paid Calls Quota finished !!1"));
+            if (totalGraceCall == 0) {
+                quotaService.registerInExpireKeySpace(new ExpiredPublicKey(requestWrapper.getKeyClientApi().getUniqueId(), Instant.now().getEpochSecond(), "Paid Calls Quota finished !!1"));
                 requestWrapper.addEmail(
                         Email.builder()
-                                .key(grace.getUuid())
+                                .key(requestWrapper.getKeyClientApi().getUniqueId())
                                 .to(requestWrapper.getKeyClientApi().getUserEmail())
                                 .subject("key expired. Paid Calls Quota finished")
                                 .remark("This key has expired")
@@ -55,23 +56,24 @@ public class QuotaPolicy extends Policy {
                                 .build()
                 );
                 return;
-            }else if (grace.getUsed_grace_calls() == 0) {
+            } else if (graceCallsUses == 0) {
+                this.quotaService.registerInGraceKeySpace(requestWrapper.getKeyClientApi().getUniqueId());
                 requestWrapper.addEmail(
                         Email.builder()
-                                .key(grace.getUuid())
+                                .key(requestWrapper.getKeyClientApi().getUniqueId())
                                 .to(requestWrapper.getKeyClientApi().getUserEmail())
-                                .subject("Grace calls")
-                                .remark("Grace calls started")
-                                .type(EmailEntry.GRACE_CALLS_STARTED)
+                                .subject("key expired. Paid Calls Quota finished")
+                                .remark("This key has expired")
+                                .type(EmailEntry.KEY_EXPIRED)
                                 .build()
                 );
-            } else if (grace.getAgreed_grace_calls() - 1 >= grace.getUsed_grace_calls()) {
+            } else if (totalGraceCall - 1 >= graceCallsUses) {
                 // expire the key
                 quotaService.registerInExpireKeySpace(new ExpiredPublicKey(requestWrapper.getKeyClientApi().getUniqueId(), Instant.now().getEpochSecond(), "Paid Calls Quota finished!!!"));
                 // register email and notification to be sent
                 requestWrapper.addEmail(
                         Email.builder()
-                                .key(grace.getUuid())
+                                .key(requestWrapper.getKeyClientApi().getUniqueId())
                                 .to(requestWrapper.getKeyClientApi().getUserEmail())
                                 .subject("key expired. Paid Calls Quota finished")
                                 .remark("This key has expired")
@@ -79,33 +81,33 @@ public class QuotaPolicy extends Policy {
                                 .build()
                 );
                 // grace calls watermarks
-            }else {
+            } else {
                 Arrays.stream(applicationConfiguration.getGRACE_CALLS_LOWER_WATERMARKS())
-                        .filter(c -> grace.getAgreed_grace_calls()-grace.getUsed_grace_calls() == c)
+                        .filter(c -> totalGraceCall - graceCallsUses == c)
                         .findFirst()
                         .ifPresent(c -> requestWrapper.addEmail(
                                 Email.builder()
-                                        .key(grace.getUuid())
+                                        .key(requestWrapper.getKeyClientApi().getUniqueId())
                                         .to(requestWrapper.getKeyClientApi().getUserEmail())
-                                        .subject(c+" grace calls remaining")
+                                        .subject(c + " grace calls remaining")
                                         .remark("Grace calls alert")
                                         .type(EmailEntry.GRACE_CALLS_LEFT)
                                         .build()));
             }
-            quotaService.increaseGraceCallUses(grace);
+            quotaService.increaseGraceCallUses(requestWrapper.getKeyClientApi().getUniqueId());
         } else {
             Arrays.stream(applicationConfiguration.getGRACE_CALLS_LOWER_WATERMARKS())
-                    .filter(c -> paid.getAgreed_calls()-paid.getAgreed_calls() == c)
+                    .filter(c -> totalCalls - paidCallUses == c)
                     .findFirst()
                     .ifPresent(c -> requestWrapper.addEmail(
                             Email.builder()
-                                    .key(paid.getUuid())
+                                    .key(requestWrapper.getKeyClientApi().getUniqueId())
                                     .to(requestWrapper.getKeyClientApi().getUserEmail())
                                     .subject(c+" paid calls remaining")
                                     .remark("Paid calls alert")
                                     .type(EmailEntry.CALLS_LEFT)
                                     .build()));
-            quotaService.increasePaidCallUses(paid);
+            quotaService.increasePaidCallUses(requestWrapper.getKeyClientApi().getUniqueId());
         }
     }
 }

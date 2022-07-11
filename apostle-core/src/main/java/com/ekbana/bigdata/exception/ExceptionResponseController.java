@@ -41,7 +41,7 @@ public class ExceptionResponseController extends ResponseEntityExceptionHandler 
         ResponseWrapper responseWrapper = ResponseWrapper.builder()
                 .responseEntity(responseEntity)
                 .responseType("ERROR")
-                .executionTime(Instant.now().getEpochSecond()-baseException.getRequestWrapper().getStartTime())
+                .executionTime(Instant.now().toEpochMilli()-baseException.getRequestWrapper().getStartTime())
                 .build();
 
         apiHandler.getPostService().postServiceExecute(baseException.getRequestWrapper(),responseWrapper);

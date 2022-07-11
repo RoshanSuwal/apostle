@@ -47,7 +47,7 @@ public class PackageValidationPolicy extends Policy {
                             .key(requestWrapper.getKeyClientApi().getUniqueId())
                             .to(requestWrapper.getKeyClientApi().getUserEmail())
                             .subject("Api Key has Expired")
-                            .remark("This key has expired")
+                            .remark("This key has expired |  key : "+requestWrapper.getPublicKeyAlias().getPublicKey())
                             .type(EmailEntry.KEY_EXPIRED)
                             .build()
             );

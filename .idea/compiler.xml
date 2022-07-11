@@ -14,5 +14,8 @@
         <module name="built-in-plugins" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="reset-api" target="17" />
+    </bytecodeTargetLevel>
   </component>
 </project>

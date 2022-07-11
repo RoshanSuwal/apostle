@@ -26,19 +26,19 @@ public class RateLimitPolicy extends Policy {
         if (funnel==null) return;
         else if (funnel.getYear() > 0 && rateLimitService.get(uniqueId ,RateLimit.Interval.YEAR) >= funnel.getYear()) {
             // year rule
-            throw new RateLimitException("year rate breached",requestWrapper);
+            throw new RateLimitException("year quota exceeded",requestWrapper);
         } else if (funnel.getMonth() > 0 && rateLimitService.get(uniqueId , RateLimit.Interval.MONTH) >= funnel.getMonth()) {
             // month rule
-            throw new RateLimitException("month rate breached",requestWrapper);
+            throw new RateLimitException("month quota exceeded",requestWrapper);
         } else if (funnel.getDay() > 0 && rateLimitService.get(uniqueId , RateLimit.Interval.DAY) >= funnel.getDay()) {
             // day
-            throw new RateLimitException("day rate breached",requestWrapper);
+            throw new RateLimitException("day quota exceeded",requestWrapper);
         } else if (funnel.getHour() > 0 && rateLimitService.get(uniqueId , RateLimit.Interval.HOUR) >= funnel.getHour()) {
             // hour
-            throw new RateLimitException("hour rate breached",requestWrapper);
+            throw new RateLimitException("hour quota exceeded",requestWrapper);
         } else if (funnel.getMinute() > 0 && rateLimitService.get(uniqueId , RateLimit.Interval.MINUTE) >= funnel.getMinute()) {
             // min
-            throw new RateLimitException("minute rate breached",requestWrapper);
+            throw new RateLimitException("minute quota exceeded",requestWrapper);
         }
     }
 

@@ -94,7 +94,7 @@ public class CacheResponseService extends ResponseService {
             return ResponseWrapper.builder()
                     .responseType(Metrics.RESPONSE_TYPE_CACHE)
                     .responseEntity(responseEntity)
-                    .executionTime(Instant.now().toEpochMilli() - serviceStartTime)
+                    .executionTime(Instant.now().toEpochMilli() - request.getStartTime())
                     .build();
         }else if (this.nextService!=null){
             ResponseWrapper response = this.nextService.response(request);

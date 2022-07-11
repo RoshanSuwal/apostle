@@ -40,7 +40,7 @@ public abstract class ResponseService {
             return ResponseWrapper.builder()
                     .responseType(responseType)
                     .responseEntity(responseEntity)
-                    .executionTime(Instant.now().toEpochMilli() - serviceStartTime)
+                    .executionTime(Instant.now().toEpochMilli() - request.getStartTime())
                     .build();
         }else if (nextService!=null) return nextService.response(request);
         else throw new BaseException("page not found", HttpStatus.SERVICE_UNAVAILABLE,request);
