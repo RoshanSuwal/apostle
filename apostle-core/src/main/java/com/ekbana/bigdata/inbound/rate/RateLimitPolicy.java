@@ -22,7 +22,6 @@ public class RateLimitPolicy extends Policy {
         String uniqueId = requestWrapper.getKeyClientApi().getUniqueId();
         Funnel funnel = requestWrapper.getKeyClientApi().getPersonalPackage().getFunnel();
 
-        System.out.println(funnel);
         if (funnel==null) return;
         else if (funnel.getYear() > 0 && rateLimitService.get(uniqueId ,RateLimit.Interval.YEAR) >= funnel.getYear()) {
             // year rule

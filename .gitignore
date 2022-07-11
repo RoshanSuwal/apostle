@@ -19,4 +19,5 @@ script.sh
 
 .vscode/
 *.properties
+application.properties
 

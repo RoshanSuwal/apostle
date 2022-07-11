@@ -8,7 +8,7 @@ import org.springframework.context.annotation.PropertySource;
 
 import java.util.Arrays;
 
-//@PropertySource("file:///home/roshan/workspace/ekbana/bigdata/apostle/env_var.properties")
+//@PropertySource("file:///home/ek-desktop-26/workspace/bigdata/apostle/env_var.properties")
 @PropertySource("file:///etc/ekmiddleware/properties/env_var.properties")
 @Configuration
 @Getter

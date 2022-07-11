@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 @Repository
 public class QuotaService {
     public static final String PAID_KEYSPACE = "paid_calls";
+    public static final String USED_KEYSPACE="used_calls";
     public static final String GRACE_KEYSPACE = "grace_calls";
     public static final String EXPIRE_KEY_SPACE = "expire_keys";
 
@@ -23,7 +24,7 @@ public class QuotaService {
     }
 
     public boolean isInPaidKeySpace(String key){
-        return this.hashOperations.hasKey(PAID_KEYSPACE,key);
+        return this.hashOperations.hasKey(USED_KEYSPACE,key);
     }
 
     public boolean isInGraceKeySpace(String key){
@@ -31,26 +32,15 @@ public class QuotaService {
     }
 
     public void registerInPaidKeySpace(Paid paid){
-        this.hashOperations.put(PAID_KEYSPACE,paid.getUuid(),paid);
+        this.hashOperations.put(USED_KEYSPACE,paid.getUuid(),paid);
     }
 
     public Paid getFromPaidKeyspace(String key){
-        return (Paid) this.hashOperations.get(PAID_KEYSPACE,key);
+        return (Paid) this.hashOperations.get(USED_KEYSPACE,key);
     }
     public void increasePaidCallUses(Paid paid){
         paid.setUsed_calls(paid.getUsed_calls()+1);
         registerInPaidKeySpace(paid);
-    }
-
-    public void registerInPaidKeySpace(String key){
-        this.hashOperations.put(PAID_KEYSPACE,key,0);
-    }
-
-    public void increasePaidCallUses(String key){
-        this.hashOperations.increment(PAID_KEYSPACE,key,1);
-    }
-    public Integer getFromPaidKeySpace(String key){
-        return (Integer) this.hashOperations.get(PAID_KEYSPACE,key);
     }
 
     public void registerInGraceKeySpace(Grace grace){
@@ -59,6 +49,27 @@ public class QuotaService {
 
     public Grace getFromGraceKeyspace(String key){
         return (Grace) this.hashOperations.get(GRACE_KEYSPACE,key);
+    }
+
+    public void increaseGraceCallUses(Grace grace){
+        grace.setUsed_grace_calls(grace.getUsed_grace_calls()+1);
+        registerInGraceKeySpace(grace);
+    }
+
+    public void registerInExpireKeySpace(ExpiredPublicKey expiredPublicKey){
+        this.hashOperations.put(EXPIRE_KEY_SPACE,expiredPublicKey.getPublicKey(),expiredPublicKey);
+    }
+
+
+    public void registerInPaidKeySpace(String key){
+        this.hashOperations.put(USED_KEYSPACE,key,0);
+    }
+
+    public void increasePaidCallUses(String key){
+        this.hashOperations.increment(USED_KEYSPACE,key,1);
+    }
+    public Integer getFromPaidKeySpace(String key){
+        return (Integer) this.hashOperations.get(USED_KEYSPACE,key);
     }
 
     public void registerInGraceKeySpace(String key){
@@ -70,14 +81,5 @@ public class QuotaService {
 
     public void increaseGraceCallUses(String key){
         this.hashOperations.increment(GRACE_KEYSPACE,key,1);
-    }
-
-    public void increaseGraceCallUses(Grace grace){
-        grace.setUsed_grace_calls(grace.getUsed_grace_calls()+1);
-        registerInGraceKeySpace(grace);
-    }
-
-    public void registerInExpireKeySpace(ExpiredPublicKey expiredPublicKey){
-        this.hashOperations.put(EXPIRE_KEY_SPACE,expiredPublicKey.getPublicKey(),expiredPublicKey);
     }
 }
