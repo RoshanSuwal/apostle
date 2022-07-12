@@ -22,7 +22,7 @@ public class RateLimitService {
     public Integer get(String key, String interval) {
         return getTTL(key, interval) > 0 ?
                 (Integer) valueOperations.get(key + "_" + interval)
-                : 0;
+                : 1;
     }
 
     public void update(String key, String interval,long rate) {
