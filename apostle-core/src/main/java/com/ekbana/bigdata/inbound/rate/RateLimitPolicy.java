@@ -49,24 +49,24 @@ public class RateLimitPolicy extends Policy {
         if (funnel==null) return;
         else if (funnel.getYear() > 0 ) {
             // year rule
-            rateLimitService.update(uniqueId,RateLimit.Interval.YEAR);
+            rateLimitService.update(uniqueId,RateLimit.Interval.YEAR,funnel.getYear());
         }
 
         if (funnel.getMonth() > 0 ) {
             // month rule
-            rateLimitService.update(uniqueId,RateLimit.Interval.MONTH);
+            rateLimitService.update(uniqueId,RateLimit.Interval.MONTH,funnel.getMonth());
         }
         if (funnel.getDay() > 0 ) {
             // day rule
-            rateLimitService.update(uniqueId,RateLimit.Interval.DAY);
+            rateLimitService.update(uniqueId,RateLimit.Interval.DAY,funnel.getDay());
         }
         if (funnel.getHour() > 0 ) {
             // hour rule
-            rateLimitService.update(uniqueId,RateLimit.Interval.HOUR);
+            rateLimitService.update(uniqueId,RateLimit.Interval.HOUR,funnel.getHour());
         }
         if (funnel.getMinute() > 0 ) {
             // minute rule
-            rateLimitService.update(uniqueId,RateLimit.Interval.MINUTE);
+            rateLimitService.update(uniqueId,RateLimit.Interval.MINUTE,funnel.getMinute());
         }
     }
 }
