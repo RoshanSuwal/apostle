@@ -1,0 +1,25 @@
+version: "3.3"
+
+services:
+  apostl_plugin_service:
+    image: maven:3.8.5-openjdk-17
+    container_name: apostle_plugin
+    restart: always
+    working_dir: /app
+    command: bash -c "
+      chmod 755 /app/apostle-build.sh && chmod 755 /app/collections/bin/apostle.sh && /app/apostle-build.sh collections
+      && /app/collections/bin/apostle.sh"
+    volumes:
+      - /var/www/apostle/:/app/
+      - /var/www/volumes/apostle_plugin/env/env_var.properties:/etc/ekmiddleware/properties/env_var.properties
+      - /var/www/volumes/apostle_plugin/env/application.properties:/app/collections/bin/application.properties
+      - /var/www/volumes/apostle_plugin/env/apostle.sh:/app/collections/bin/apostle.sh
+      - /var/www/volumes/apostle_plugin/env/logback-spring.xml:/app/collections/bin/logback-spring.xml
+      - /var/www/volumes/apostle_plugin/m2/.m2:/root/.m2/
+    ports:
+      - "8283:8090"
+
+networks:
+  default:
+    external:
+      name: uat_apostle_cms_network

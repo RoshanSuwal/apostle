@@ -22,6 +22,9 @@ script.sh
 application.properties
 
 output/
-apostle-build.sh
+#apostle-build.sh
+script.sh
 apostle.sh
+logback-spring.xml
+env_var.properties
 
