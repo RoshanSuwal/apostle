@@ -21,3 +21,7 @@ script.sh
 *.properties
 application.properties
 
+output/
+apostle-build.sh
+apostle.sh
+
