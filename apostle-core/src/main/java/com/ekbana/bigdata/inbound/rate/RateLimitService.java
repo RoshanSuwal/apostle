@@ -27,7 +27,7 @@ public class RateLimitService {
 
     public void update(String key, String interval,long rate) {
         if (getTTL(key,interval)>0){
-            this.valueOperations.decrement(key+"_"+interval);
+            this.valueOperations.decrement(key+"_"+interval,1);
         }else {
             this.valueOperations.set(key+"_"+interval,rate-1);
             this.redisTemplate.expire(key+"_"+interval, Duration.ofSeconds(intervalToTimeStamp(interval)));

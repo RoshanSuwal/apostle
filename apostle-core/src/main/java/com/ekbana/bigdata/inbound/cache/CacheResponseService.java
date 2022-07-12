@@ -90,7 +90,7 @@ public class CacheResponseService extends ResponseService {
         logger.info("[{}] {}","Response Service", this.getClass().getSimpleName());
         ResponseEntity<?> responseEntity = responseEntity(request);
         if (responseEntity!=null) {
-            log(request);
+//            log(request);
             return ResponseWrapper.builder()
                     .responseType(Metrics.RESPONSE_TYPE_CACHE)
                     .responseEntity(responseEntity)

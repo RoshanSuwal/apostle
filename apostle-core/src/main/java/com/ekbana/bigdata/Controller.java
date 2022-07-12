@@ -5,6 +5,8 @@ import com.ekbana.bigdata.entity.api.Api;
 import com.ekbana.bigdata.entity.ip.RemoteIP;
 import com.ekbana.bigdata.helpers.UrlComponents;
 import com.ekbana.bigdata.wrapper.RequestWrapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,12 +21,14 @@ import java.time.Instant;
 @RestController
 public class Controller {
 
+    private static final Logger LOGGER= LoggerFactory.getLogger(Controller.class);
     @Autowired
     ApiHandler apiHandler;
 
     @RequestMapping("/**")
     public ResponseEntity<?> get(HttpServletRequest request, HttpServletResponse response){
-
+        LOGGER.info("\n");
+        LOGGER.info("[NEW REQUESTS] Accepted request for [" + request.getRequestURL() + "?" + request.getQueryString() + "]");
         UrlComponents urlComponents = new UrlComponents(request);
         RequestWrapper requestWrapper = RequestWrapper.builder()
                 .httpServletRequest(request)
