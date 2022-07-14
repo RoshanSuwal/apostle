@@ -9,7 +9,7 @@ import org.springframework.http.ResponseEntity;
 @Setter
 @Builder
 public class ResponseWrapper {
-    ResponseEntity<?> responseEntity;
+    ResponseEntity responseEntity;
     String responseType;
     Long executionTime;
 }

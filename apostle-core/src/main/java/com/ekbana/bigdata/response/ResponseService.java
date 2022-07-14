@@ -26,7 +26,7 @@ public abstract class ResponseService {
         return this.nextService;
     }
 
-    protected abstract ResponseEntity<?> responseEntity(RequestWrapper request);
+    protected abstract ResponseEntity responseEntity(RequestWrapper request);
 
     protected void log(RequestWrapper request){
         logger.info(this.getClass().getSimpleName());
@@ -34,7 +34,7 @@ public abstract class ResponseService {
 
     public ResponseWrapper response(RequestWrapper request){
         logger.info("[{}] {}","Response Service", this.getClass().getSimpleName());
-        ResponseEntity<?> responseEntity = responseEntity(request);
+        ResponseEntity responseEntity = responseEntity(request);
         if (responseEntity!=null) {
 //            log(request);
             return ResponseWrapper.builder()

@@ -22,7 +22,7 @@ public class BackendResponseService extends ResponseService {
     }
 
     @Override
-    protected ResponseEntity<?> responseEntity(RequestWrapper requestWrapper) {
+    protected ResponseEntity responseEntity(RequestWrapper requestWrapper) {
         HashMap<String, String> replaceHeader = requestWrapper.getUrlComponents().getHeaders();
         replaceHeader.remove("api-key");
         requestWrapper.getKeyClientApi().getApi().setParameters(requestWrapper.getUrlComponents().getEndPoint());
@@ -36,7 +36,7 @@ public class BackendResponseService extends ResponseService {
                         .build()
                         .setRedirectToUrl(requestWrapper.getKeyClientApi().getApi(), requestWrapper.getHttpServletRequest().getQueryString())
                         .sendGetRequest();
-                return ResponseEntity.status(response.code()).body(Objects.requireNonNull(response.body()).toString());
+                return ResponseEntity.status(response.code()).body(Objects.requireNonNull(response.body()).string());
             } else if (requestWrapper.getUrlComponents().getMethod().equals(HttpMethod.POST.toString())) {
                 okhttp3.Response response = HTTPRequestDispatcher.builder()
                         .okHttp(new OkHttpClient())
@@ -46,7 +46,7 @@ public class BackendResponseService extends ResponseService {
                         .build()
                         .setRedirectToUrl(requestWrapper.getKeyClientApi().getApi(), requestWrapper.getHttpServletRequest().getQueryString())
                         .sendPostRequest(requestWrapper.getUrlComponents().getRequest());
-                return ResponseEntity.status(response.code()).body(Objects.requireNonNull(response.body()).toString());
+                return ResponseEntity.status(response.code()).body(Objects.requireNonNull(response.body()).string());
             }else if (requestWrapper.getUrlComponents().getMethod().equals(HttpMethod.PUT.toString())) {
                 okhttp3.Response response = HTTPRequestDispatcher.builder()
                         .okHttp(new OkHttpClient())
@@ -56,7 +56,7 @@ public class BackendResponseService extends ResponseService {
                         .build()
                         .setRedirectToUrl(requestWrapper.getKeyClientApi().getApi(), requestWrapper.getHttpServletRequest().getQueryString())
                         .sendPutRequest(requestWrapper.getUrlComponents().getRequest());
-                return ResponseEntity.status(response.code()).body(Objects.requireNonNull(response.body()).toString());
+                return ResponseEntity.status(response.code()).body(Objects.requireNonNull(response.body()).string());
             }else if (requestWrapper.getUrlComponents().getMethod().equals(HttpMethod.PATCH.toString())) {
                 okhttp3.Response response = HTTPRequestDispatcher.builder()
                         .okHttp(new OkHttpClient())
@@ -66,7 +66,7 @@ public class BackendResponseService extends ResponseService {
                         .build()
                         .setRedirectToUrl(requestWrapper.getKeyClientApi().getApi(), requestWrapper.getHttpServletRequest().getQueryString())
                         .sendPatchRequest(requestWrapper.getUrlComponents().getRequest());
-                return ResponseEntity.status(response.code()).body(Objects.requireNonNull(response.body()).toString());
+                return ResponseEntity.status(response.code()).body(Objects.requireNonNull(response.body()).string());
             }else if (requestWrapper.getUrlComponents().getMethod().equals(HttpMethod.DELETE.toString())) {
                 okhttp3.Response response = HTTPRequestDispatcher.builder()
                         .okHttp(new OkHttpClient())
@@ -76,7 +76,7 @@ public class BackendResponseService extends ResponseService {
                         .build()
                         .setRedirectToUrl(requestWrapper.getKeyClientApi().getApi(), requestWrapper.getHttpServletRequest().getQueryString())
                         .sendDeleteRequest(requestWrapper.getUrlComponents().getRequest());
-                return ResponseEntity.status(response.code()).body(Objects.requireNonNull(response.body()).toString());
+                return ResponseEntity.status(response.code()).body(Objects.requireNonNull(response.body()).string());
             } else {
                 requestWrapper.addNotification(Notification.builder().urgent(true).message(requestWrapper.getUrlComponents().getMethod()+" service not available").build());
                 throw new BaseException(requestWrapper.getUrlComponents().getMethod()+" service not available", HttpStatus.SERVICE_UNAVAILABLE, requestWrapper);

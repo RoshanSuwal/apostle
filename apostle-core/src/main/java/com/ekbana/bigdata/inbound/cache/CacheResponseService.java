@@ -29,7 +29,7 @@ public class CacheResponseService extends ResponseService {
     }
 
     @Override
-    protected ResponseEntity<?> responseEntity(RequestWrapper request) {
+    protected ResponseEntity responseEntity(RequestWrapper request) {
         if (request.getKeyClientApi().getApi().isCacheable()) {
             Map<String, String> stringStringMap = antPathMatcher.extractUriTemplateVariables(request.getKeyClientApi().getApi().getParameters(), request.getApi().getParameters());
             CacheResponse cacheResponse = new CacheResponse(request.getKeyClientApi().getUniqueId(),
@@ -88,7 +88,7 @@ public class CacheResponseService extends ResponseService {
     @Override
     public ResponseWrapper response(RequestWrapper request) {
         logger.info("[{}] {}","Response Service", this.getClass().getSimpleName());
-        ResponseEntity<?> responseEntity = responseEntity(request);
+        ResponseEntity responseEntity = responseEntity(request);
         if (responseEntity!=null) {
 //            log(request);
             return ResponseWrapper.builder()

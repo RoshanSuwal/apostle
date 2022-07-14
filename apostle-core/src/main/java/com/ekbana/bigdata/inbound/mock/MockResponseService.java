@@ -21,7 +21,7 @@ public class MockResponseService extends ResponseService {
     }
 
     @Override
-    protected ResponseEntity<?> responseEntity(RequestWrapper request) {
+    protected ResponseEntity responseEntity(RequestWrapper request) {
         if (request.getKeyClientApi().getApi().getMock() != null)
             if (request.getKeyClientApi().getApi().getMock().getStatus())if (request.getKeyClientApi().getApi().getMock() != null)
                 if (request.getKeyClientApi().getApi().getMock().getStatus()) {
