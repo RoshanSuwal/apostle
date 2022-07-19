@@ -9,6 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.time.Instant;
+import java.time.OffsetDateTime;
 
 @com.ekbana.bigdata.annotation.PostService(value = "metrics service")
 public class MetricService extends PostService {
@@ -31,7 +32,7 @@ public class MetricService extends PostService {
                                     .method(requestWrapper.getUrlComponents().getMethod())
                                     .ip(requestWrapper.getUrlComponents().getIp())
                                     .userAgent(requestWrapper.getUrlComponents().getHeaderKey("user-agent"))
-                                    .time(Instant.now().toEpochMilli())
+                                    .time(OffsetDateTime.now().toInstant().toEpochMilli())
                                     .responseType(responseWrapper.getResponseType())
                                     .statusCode(responseWrapper.getResponseEntity().getStatusCodeValue())
                                     .DoBR(responseWrapper.getExecutionTime())

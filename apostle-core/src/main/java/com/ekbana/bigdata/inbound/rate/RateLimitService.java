@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.Duration;
 import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 
 @Repository
 public class RateLimitService {
@@ -39,18 +40,18 @@ public class RateLimitService {
     }
 
     private Long intervalToTimeStamp(String interval){
-        Long currentEpochSecond = OffsetDateTime.now().toEpochSecond();
+        Long currentEpochSecond = OffsetDateTime.now(ZoneOffset.of("+05:45")).toEpochSecond();
         if(interval.equals(RateLimit.Interval.YEAR))
-            return OffsetDateTime.now().plusYears(1).withMonth(1).withDayOfMonth(1).withHour(0).withMinute(0).withSecond(0).toEpochSecond()-currentEpochSecond;
+            return OffsetDateTime.now(ZoneOffset.of("+05:45")).plusYears(1).withMonth(1).withDayOfMonth(1).withHour(0).withMinute(0).withSecond(0).toEpochSecond()-currentEpochSecond;
 //            return RateLimit.TIME_INTERVAL.YEAR;
         else if (interval.equals(RateLimit.Interval.MONTH))
-            return OffsetDateTime.now().plusMonths(1).withDayOfMonth(1).withHour(0).withMinute(0).withSecond(0).toEpochSecond()-currentEpochSecond;
+            return OffsetDateTime.now(ZoneOffset.of("+05:45")).plusMonths(1).withDayOfMonth(1).withHour(0).withMinute(0).withSecond(0).toEpochSecond()-currentEpochSecond;
 //        return RateLimit.TIME_INTERVAL.MONTH;
         else if (interval.equals(RateLimit.Interval.DAY))
-            return OffsetDateTime.now().plusDays(1).withHour(0).withMinute(0).withSecond(0).toEpochSecond()-currentEpochSecond;
+            return OffsetDateTime.now(ZoneOffset.of("+05:45")).plusDays(1).withHour(0).withMinute(0).withSecond(0).toEpochSecond()-currentEpochSecond;
 //        return RateLimit.TIME_INTERVAL.DAY;
         else if (interval.equals(RateLimit.Interval.HOUR))
-            return OffsetDateTime.now().plusHours(1).withMinute(0).withSecond(0).toEpochSecond()-currentEpochSecond;
+            return OffsetDateTime.now(ZoneOffset.of("+05:45")).plusHours(1).withMinute(0).withSecond(0).toEpochSecond()-currentEpochSecond;
 //        return RateLimit.TIME_INTERVAL.HOUR;
         else if (interval.equals(RateLimit.Interval.MINUTE))
             return RateLimit.TIME_INTERVAL.MINUTE;
