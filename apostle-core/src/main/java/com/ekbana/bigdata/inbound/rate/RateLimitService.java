@@ -1,9 +1,9 @@
 package com.ekbana.bigdata.inbound.rate;
 
+import com.ekbana.bigdata.configuration.ApplicationConfiguration;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Repository;
-import org.springframework.stereotype.Service;
 
 import java.time.Duration;
 import java.time.OffsetDateTime;
@@ -14,10 +14,12 @@ public class RateLimitService {
 
     private final RedisTemplate<String, Object> redisTemplate;
     private final ValueOperations<String, Object> valueOperations;
+    private final ApplicationConfiguration applicationConfiguration;
 
-    public RateLimitService(RedisTemplate<String, Object> redisTemplate) {
+    public RateLimitService(RedisTemplate<String, Object> redisTemplate, ApplicationConfiguration applicationConfiguration) {
         this.redisTemplate = redisTemplate;
         this.valueOperations = redisTemplate.opsForValue();
+        this.applicationConfiguration = applicationConfiguration;
     }
 
     public Integer get(String key, String interval) {
@@ -40,18 +42,18 @@ public class RateLimitService {
     }
 
     private Long intervalToTimeStamp(String interval){
-        Long currentEpochSecond = OffsetDateTime.now(ZoneOffset.of("+05:45")).toEpochSecond();
+        Long currentEpochSecond = OffsetDateTime.now(ZoneOffset.of(applicationConfiguration.getTIMEZONE_OFFSET())).toEpochSecond();
         if(interval.equals(RateLimit.Interval.YEAR))
-            return OffsetDateTime.now(ZoneOffset.of("+05:45")).plusYears(1).withMonth(1).withDayOfMonth(1).withHour(0).withMinute(0).withSecond(0).toEpochSecond()-currentEpochSecond;
+            return OffsetDateTime.now(ZoneOffset.of(applicationConfiguration.getTIMEZONE_OFFSET())).plusYears(1).withMonth(1).withDayOfMonth(1).withHour(0).withMinute(0).withSecond(0).toEpochSecond()-currentEpochSecond;
 //            return RateLimit.TIME_INTERVAL.YEAR;
         else if (interval.equals(RateLimit.Interval.MONTH))
-            return OffsetDateTime.now(ZoneOffset.of("+05:45")).plusMonths(1).withDayOfMonth(1).withHour(0).withMinute(0).withSecond(0).toEpochSecond()-currentEpochSecond;
+            return OffsetDateTime.now(ZoneOffset.of(applicationConfiguration.getTIMEZONE_OFFSET())).plusMonths(1).withDayOfMonth(1).withHour(0).withMinute(0).withSecond(0).toEpochSecond()-currentEpochSecond;
 //        return RateLimit.TIME_INTERVAL.MONTH;
         else if (interval.equals(RateLimit.Interval.DAY))
-            return OffsetDateTime.now(ZoneOffset.of("+05:45")).plusDays(1).withHour(0).withMinute(0).withSecond(0).toEpochSecond()-currentEpochSecond;
+            return OffsetDateTime.now(ZoneOffset.of(applicationConfiguration.getTIMEZONE_OFFSET())).plusDays(1).withHour(0).withMinute(0).withSecond(0).toEpochSecond()-currentEpochSecond;
 //        return RateLimit.TIME_INTERVAL.DAY;
         else if (interval.equals(RateLimit.Interval.HOUR))
-            return OffsetDateTime.now(ZoneOffset.of("+05:45")).plusHours(1).withMinute(0).withSecond(0).toEpochSecond()-currentEpochSecond;
+            return OffsetDateTime.now(ZoneOffset.of(applicationConfiguration.getTIMEZONE_OFFSET())).plusHours(1).withMinute(0).withSecond(0).toEpochSecond()-currentEpochSecond;
 //        return RateLimit.TIME_INTERVAL.HOUR;
         else if (interval.equals(RateLimit.Interval.MINUTE))
             return RateLimit.TIME_INTERVAL.MINUTE;

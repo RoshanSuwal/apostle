@@ -18,7 +18,7 @@ public class ApplicationConfiguration {
 
     private String KEY_EXPIRATION_LOWER_WATERMARK_DAYS = "1";
     private String ALLOWED_CALLS_LOWER_WATERMARK = "1";
-    private String GRACE_CALLS_LOWER_WATERMARK="1";
+    private String GRACE_CALLS_LOWER_WATERMARK = "1";
 
     public int[] getKEY_EXPIRATION_LOWER_WATERMARK_DAYS() {
         return Arrays.stream(KEY_EXPIRATION_LOWER_WATERMARK_DAYS
@@ -72,26 +72,33 @@ public class ApplicationConfiguration {
     private int INACTIVE_KEY_CODE;
 
 
-    /**Policies*/
-    private String PRE_POLICIES="ip policy,public key policy,api validation policy,package validation policy,quota policy,rate limit policy";
-    private String POST_POLICIES="quota policy,rate limit policy";
-    private String RESPONSE_ORDER="mock response,cache response,backend response";
-    private String POST_SERVICES="metrics service,email service, notification service";
+    /**
+     * Policies
+     */
+    private String PRE_POLICIES = "ip policy,public key policy,api validation policy,package validation policy,quota policy,rate limit policy";
+    private String POST_POLICIES = "quota policy,rate limit policy";
+    private String RESPONSE_ORDER = "mock response,cache response,backend response";
+    private String POST_SERVICES = "metrics service,email service, notification service";
 
-    public String[] getPRE_POLICIES(){
-        return Arrays.stream(PRE_POLICIES.split(",")).map(s->s.trim()).toArray(String[]::new);
+    public String[] getPRE_POLICIES() {
+        return Arrays.stream(PRE_POLICIES.split(",")).map(s -> s.trim()).toArray(String[]::new);
     }
 
-    public String[] getPOST_POLICIES(){
-        return Arrays.stream(POST_POLICIES.split(",")).map(s->s.trim()).toArray(String[]::new);
+    public String[] getPOST_POLICIES() {
+        return Arrays.stream(POST_POLICIES.split(",")).map(s -> s.trim()).toArray(String[]::new);
     }
 
-    public String[] getRESPONSE_ORDER(){
-        return Arrays.stream(RESPONSE_ORDER.split(",")).map(s->s.trim()).toArray(String[]::new);
+    public String[] getRESPONSE_ORDER() {
+        return Arrays.stream(RESPONSE_ORDER.split(",")).map(s -> s.trim()).toArray(String[]::new);
     }
 
-    public String[] getPOST_SERVICES(){
-        return Arrays.stream(POST_SERVICES.split(",")).map(s->s.trim()).toArray(String[]::new);
+    public String[] getPOST_SERVICES() {
+        return Arrays.stream(POST_SERVICES.split(",")).map(s -> s.trim()).toArray(String[]::new);
     }
 
+    private String TIMEZONE_OFFSET = "+00:00";
+
+    public String getTIMEZONE_OFFSET() {
+        return TIMEZONE_OFFSET;
+    }
 }
