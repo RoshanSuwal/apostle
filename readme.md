@@ -1,5 +1,5 @@
-## APOSTLE 
-Apostle project developed using the plugin architecture.
+## APOSTLE - API Management System
+A scalable, multi-cloud API management platform for securing, publishing, and analyzing APIs
 
 ### Description of Project
 1. Built using __JAVA-17__.
